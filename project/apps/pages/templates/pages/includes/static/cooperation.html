@@ -1,0 +1,124 @@
+{% load static %}
+
+<section class="cooperation-section cooperation-section_mt_0">
+    <div class="section-wrapper">
+        <div class="cooperation">
+
+            <div class="cooperation-voldemort">
+                <img class="cooperation-voldemort__img" src="{% static 'images/cooperation_voldemort.png' %}" alt="Получите доступ к оптовым ценам на 10 000 наших товаров">
+                <div class="cooperation-voldemort-content">
+                    <p class="cooperation-voldemort__text">Получите доступ к оптовым ценам на 10 000 наших товаров</p>
+                    <button class="btn btn-primary cooperation-voldemort-btn cooperation-voldemort-btn--desktop" data-modal="cooperationRegister">
+                        <span class="cooperation-voldemort-btn__text">Зарегистрироваться</span>
+                    </button>
+                </div>
+            </div>
+            <button class="btn btn-primary cooperation-voldemort-btn cooperation-voldemort-btn--mobile" data-modal="cooperationRegister">
+                <span class="cooperation-voldemort-btn__text">Зарегистрироваться</span>
+            </button>
+            <section class="cooperation-section cooperation-advantages">
+                <h2 class="cooperation-section__title">Преимущества сотрудничества</h2>
+                <div class="cooperation-section-container cooperation-advantages-container">
+                    <div class="cooperation-advantages-item">
+                        <div class="cooperation-advantages-item__icon">
+                            <svg>
+                                <use xlink:href="{% static 'images/static-sprite.svg' %}#manager"></use>
+                            </svg>
+                        </div>
+                        <div class="cooperation-advantages-item-content">
+                            <p class="cooperation-advantages-item__title">Персональный менеджер</p>
+                            <p class="cooperation-advantages-item__description">
+                                Оперативный ответ на любой вопрос и быстрое решение проблем. Профессиональная помощь в выборе товаров. Полное документальное сопровождение. 
+                            </p>
+                        </div>
+                    </div>
+                    <div class="cooperation-advantages-item">
+                        <div class="cooperation-advantages-item__icon">
+                            <svg>
+                                <use xlink:href="{% static 'images/static-sprite.svg' %}#personal_account"></use>
+                            </svg>
+                        </div>
+                        <div class="cooperation-advantages-item-content">
+                            <p class="cooperation-advantages-item__title">Личный кабинет на сайте</p>
+                            <p class="cooperation-advantages-item__description">
+                                Постоянный доступ к каталогу с оптовыми ценами после регистрации. Удобное формирование заказа онлайн в любое время суток. Быстрая обработка заявок с сайта. История заказов всегда под рукой. 
+                            </p>
+                        </div>
+                    </div>
+                    <div class="cooperation-advantages-item">
+                        <div class="cooperation-advantages-item__icon">
+                            <svg>
+                                <use xlink:href="{% static 'images/static-sprite.svg' %}#cart_free"></use>
+                            </svg>
+                        </div>
+                        <div class="cooperation-advantages-item-content">
+                            <p class="cooperation-advantages-item__title">Бесплатная рекламная продукция </p>
+                            <p class="cooperation-advantages-item__description">
+                                Предоставление рекламных материалов для оформления вашей торговой точки. Эффективные рекламные материалы с информацией от производителей. 
+                            </p>
+                        </div>
+                    </div>
+                    <div class="cooperation-advantages-item">
+                        <div class="cooperation-advantages-item__icon">
+                            <svg>
+                                <use xlink:href="{% static 'images/static-sprite.svg' %}#discount_special"></use>
+                            </svg>
+                        </div>
+                        <div class="cooperation-advantages-item-content">
+                            <p class="cooperation-advantages-item__title">Специальные условия для новых клиентов</p>
+                            <p class="cooperation-advantages-item__description">
+                                Индивидуальные условия для долгосрочного сотрудничества. Выгодные цены, персональные скидки и спецпредложения. Акции и бонусы. 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="cooperation-section cooperation-marks">
+                <h2 class="cooperation-section__title">Наши торговые марки</h2>
+                {% include 'includes/brands.html' %}
+            </section>
+
+        </div>
+
+    </div>
+    <section class="cooperation-section cooperation-set">
+        <div class="section-wrapper cooperation-set-wrapper">
+            <h2 class="cooperation-section__title">С нами вы получите</h2>
+            <div class="cooperation-section-container cooperation-set-container">
+                    <div class="cooperation-set-item">
+                        <div class="cooperation-set-item__icon">
+                            <svg>
+                                <use xlink:href="{% static 'images/static-sprite.svg' %}#individual_price"></use>
+                            </svg>
+                        </div>
+                        <p class="cooperation-set-item__title">Индивидуальные цены</p>
+                    </div>
+                    <div class="cooperation-set-item">
+                        <div class="cooperation-set-item__icon">
+                            <svg>
+                                <use xlink:href="{% static 'images/static-sprite.svg' %}#furnace"></use>
+                            </svg>
+                        </div>
+                        <p class="cooperation-set-item__title">Обучение по продуктам компании</p>
+                    </div>
+                    <div class="cooperation-set-item">
+                        <div class="cooperation-set-item__icon">
+                            <svg>
+                                <use href="{% static 'images/static-sprite.svg' %}#box_delivery"></use>
+                            </svg>
+                        </div>
+                        <p class="cooperation-set-item__title">Возможна бесплатная доставка</p>
+                    </div>
+                    <div class="cooperation-set-item">
+                        <div class="cooperation-set-item__icon">
+                            <svg>
+                                <use xlink:href="{% static 'images/static-sprite.svg' %}#discount_special_mini"></use>
+                            </svg>
+                        </div>
+                        <p class="cooperation-set-item__title">Акции для постоянных клиентов</p>
+                    </div>
+                </div>
+        </div>
+    </section>
+            <!-- Тут подпишитесь на рассылку -->
+</section>

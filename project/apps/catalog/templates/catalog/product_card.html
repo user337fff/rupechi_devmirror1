@@ -1,0 +1,234 @@
+{% load catalog %}
+
+{% with product.get_storage_info as storage %}
+<div class="product-card seo-product" data-id="{{ product.id }}" data-product="{{ product.id }}" data-title="{{ product.title }}"
+    data-price="{{ storage.price }}" {% if product.brand %} data-brand="{{ product.brand.title }}" {% endif %}
+    data-category="{{ product.category }}">
+    {% include 'catalog/includes/seo_product.html' %}
+    <div class="mobile-product-container">
+        <div class="mobile-product-actions">
+            <svg role="img" class="favorite">
+                <use href="/static/images/sprite.svg#favorite"></use>
+            </svg>
+            <svg role="img" class="compare">
+                <use href="/static/images/sprite.svg#compare"></use>
+            </svg>
+        </div>
+        <div class="mobile-product-image">
+            {{ product.get_template_picture_large }}
+        </div>
+        <div class="mobile-product-body">
+            <a href="{{ product.get_absolute_url }}" class="full_url mobile_url"></a>
+            {% if storage.quantity %}
+            <div class="mobile-product-stock">
+                <svg role="img">
+                    <use href="/static/images/sprite.svg#success"></use>
+                </svg>
+                В наличии
+            </div>
+            {% endif %}
+            <div class="mobile-product-title">
+                {{ product.title }}
+            </div>
+            <div class="product-card-stars">
+                <div class="product-card-stars__icons">
+                    {% with product.get_rating as rating %}
+                    {% for x in 'xxxxx' %}
+                    <svg role="img" {% if forloop.counter <= rating.rating %} class="active" {% endif %} >
+                        <use href="/static/images/sprite.svg#star"></use>
+                    </svg>
+                    {% endfor %}
+                </div>
+                <div class="product-card-stars__count">{{ rating.count }}</div>
+                {% endwith %}
+            </div>
+            <div class="mobile-product-attrs">
+                <div class="mobile-product-attr">
+                {% for attr in product.get_preview_attrs|slice:":4" %}
+                    <div class="product-card-attrs-item margin product-card_no-margin">
+                        <div class="product-card-attrs-item__group">{{ attr.attribute }}:</div>
+                        <div class="product-card_line-solid"></div>
+                        <div class="product-card-attrs-item__value">{{ attr.value }}</div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="mobile-product-footer">
+			<span class="product-card_span">
+				<div class="product-card__price">{{ storage.discount_price|default:storage.price|convert_price }}</div>
+				<form name="product1-form" action="{% url 'cart:cart_add' %}" class="js-add-cart">
+                    <input type="hidden" name="product" value="{{ product.id }}">
+                    {% if storage %}
+                    <input type="hidden" name="option" value="{{ storage.id }}">
+                    {% endif %}
+                    <label class="input-counter" style="display: none">
+                        <input type="number" name="quantity" class="input-counter-input" data-min="1" value="1" data-step="1"
+                            data-max="{{ cart.MAX }}" data-submit>
+                    </label>
+                    <button class="btn btn-primary product-card_button mobile_add-to-cart_button" type="submit">
+                        <span class="btn__text">В корзину</span>
+                    </button>
+                </form>
+			</span>
+            <a href="#" class="one-click" data-modal="oneclick">
+                <span class="one-click__wrapper">
+                    <span class="one-click__text">Купить в 1 клик</span>
+                </span>
+            </a>
+        </div>
+    </div>
+
+
+
+    <div class="product-card-container-comp">
+    <div class="product-card-container">
+        <a href="{{ product.get_absolute_url }}" class="full_url"></a>
+        <div class="product-card-image {% if not product.image %}empty{% endif %}">
+            {% if product.image %}
+            {{ product.get_template_picture_large }}
+            {% else %}
+            <svg role="img">
+                <use href="/static/images/sprite.svg#cart"></use>
+            </svg>
+            {% endif %}
+            <div class="product-card-addit-actions">
+                {% if actions == 'trash' %}
+                <svg role="img" class="trash">
+                    <use href="/static/images/sprite.svg#trash"></use>
+                </svg>
+                {% endif %}
+            </div>
+            <div class="product-card-badges">
+                {% if product.new %}
+                <div class="product-card__badge new">Новинка</div>
+                {% endif %}
+                {% if product.offer %}
+                <div class="product-card__badge offer">Акция</div>
+                {% endif %}
+                {% if product.is_hit %}
+                <div class="product-card__badge hit">Хит</div>
+                {% endif %}
+            </div>
+
+            <div class="product-card-attrs">
+            {% comment %}Дубликат ради того, чтобы список атрибутов тоже кликабельным{% endcomment %}
+            <a href="{{ product.get_absolute_url }}" class="full_url"></a>
+            <div class="product-card-attrs__actions">
+                {% if not actions %}
+                    <svg role="img" class="favorite">
+                        <use href="/static/images/sprite.svg#favorite"></use>
+                    </svg>
+                    <svg role="img" class="compare">
+                        <use href="/static/images/sprite.svg#compare"></use>
+                    </svg>
+                {% endif %}
+            </div>
+            {% for attr in product.get_preview_attrs %}
+                <div class="product-card-attrs-item">
+                    <div class="product-card-attrs-item__group">{{ attr.attribute }}:</div>
+                    <div class="product-card-attrs-item__value">{{ attr.value }}</div>
+                </div>
+            {% endfor %}
+            <div class="product-card-attrs-item">
+                    <div class="product-card-attrs-item__group">Количество:</div>
+                    <div class="product-card-attrs-item__value">
+                        {% if storage.quantity %}
+                        {% if storage.quantity > 3 %}
+                        Много
+                        {% else %}
+                        Мало
+                        {% endif %}
+                        {% else %}
+                        Под заказ
+                        {% endif %}
+                    </div>
+                </div>
+        </div>
+        </div>
+        <div class="product-card__title">{{ option|default:product }}</div>
+        {% if option %}
+        <div class="my-select">
+            <div class="my-select-header">
+                <input type="hidden" name="variations" class="my-select-header__selected" value="{{ product.id }}">
+                <span class="my-select-header__option">{{ product }}</span>
+                <svg role="img" class="my-select-header__svg">
+                    <use href="/static/images/sprite.svg#dropdown"></use>
+                </svg>
+            </div>
+            <div class="my-select-dropdown">
+                <div class="my-select-dropdown__wrap" data-simplebar>
+                    {% for item in option.get_variations.iterator %}
+                    <a href="#" class="my-select-dropdown__option {% if item == product %}selected{% endif %}"
+                        data-select="{{ item.id }}">{{ item }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="product-card-center">
+            <div class="product-card-stars">
+                <div class="product-card-stars__icons">
+                    {% with product.get_rating as rating %}
+                    {% for x in 'xxxxx' %}
+                    <svg role="img" {% if forloop.counter <= rating.rating %} class="active" {% endif %} >
+                        <use href="/static/images/sprite.svg#star"></use>
+                    </svg>
+                    {% endfor %}
+                </div>
+                <div class="product-card-stars__count">{{ rating.count }}</div>
+                {% endwith %}
+            </div>
+            <div class="product-card-prices">
+                {% if storage.old_price %}
+                <div class="product-card__old_price">{{ storage.price|convert_price }}</div>
+                <div class="product-card__price">Цена: {% if storage.variations %}от
+                    {% endif %}{{ storage.old_price|convert_price }}</div>
+                {% else %}
+                {% if storage.discount_price %}
+                <div class="product-card__old_price">{{ storage.price|convert_price }}</div>
+                {% endif %}
+                {% if storage.price %}
+                <div class="product-card__price">Цена: {{ storage.discount_price|default:storage.price|convert_price }}
+                </div>
+                {% else %}
+                <div class="product-card__no_price">Цена по запросу</div>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        {% if storage.quantity %}
+        <div class="product-card-bottom">
+            <svg role="img">
+                <use href="/static/images/sprite.svg#success"></use>
+            </svg>
+            <span style="max-width: 200px;">
+                Товар на складе в г. {{ request.domain.name }}
+            </span>
+        </div>
+        {% endif %}
+    </div>
+    <div class="product-card-footer">
+            <form action="{% url 'cart:cart_add' %}" class="product-card-footer-form js-add-cart">
+                <input type="hidden" name="product" value="{{ product.id }}">
+                {% if storage %}
+                <input type="hidden" name="option" value="{{ storage.id }}">
+                {% endif %}
+                <label class="input-counter">
+                    <input id="counter-input" type="number" name="quantity" class="input-counter-input" data-min="1" value="1" data-step="1"
+                        data-max="{{ cart.MAX }}" data-submit>
+                </label>
+                <button class="btn btn-primary" type="submit">
+                    <span class="btn__text">В корзину</span>
+                </button>
+            </form>
+            <a href="#" class="product-card-footer-one-click card--buttonBuyForClick" data-modal="oneclick">
+                <span class="product-card-footer-one-click__wrapper">
+                    <span class="product-card-footer-one-click__text">Купить в один клик</span>
+                </span>
+            </a>
+    </div>
+    </div>
+</div>
+{% endwith %}

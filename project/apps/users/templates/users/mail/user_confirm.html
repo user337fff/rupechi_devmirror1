@@ -1,0 +1,6 @@
+{% autoescape off %}
+Здравствуйте!
+Спасибо за регистрацию на сайте {{ domain }},
+Ваш пароль: {{ password }}
+{% if request.is_secure %}http{% else %}https{% endif %}://{{ domain }}
+{% endautoescape %}

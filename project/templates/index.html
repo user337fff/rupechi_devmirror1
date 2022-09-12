@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <section class="slider-section ">
+        <div class="section-wrapper">
+            <div class="slider__wrapper">
+                <div class="slider__arrows">
+                    <div class="slider__arrow left">
+                        <svg>
+                            <use href="/static/images/sprite.svg#dropdown"></use>
+                        </svg>
+                    </div>
+                    <div class="slider__arrow right">
+                        <svg>
+                            <use href="/static/images/sprite.svg#dropdown"></use>
+                        </svg>
+                    </div>
+                </div>
+                <div class="slider">
+                    {% for item in slider %}
+                        {% if item.image %}
+                            {% if item.link == 'https://feflues.ru/manual-personal-account/' %}
+                            <noindex>
+                            <a href="{{ item.link }}">
+                                {{ item.get_template_picture }}
+                            </a>
+                            </noindex>
+                            {% else %}
+                            <a href="{{ item.link }}">
+                                {{ item.get_template_picture }}
+                            </a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="section-wrapper"
+             style="align-items: center;justify-content: center;display:flex; padding-top: 15px;">
+            <a href="{% url 'catalog' %}" class="btn btn-primary">
+                <span class="btn__text">ПЕРЕЙТИ В КАТАЛОГ</span>
+            </a>
+        </div>
+    </section>
+    {% include 'includes/information.html' with information_title='Интернет-магазин печей для бани' main_page="Yes" %}
+    {% if categories %}
+    <section class="catalog-section ">
+        <div class="section-wrapper">
+            <div class="catalog">
+                <div class="catalog__icon">
+                    <img src="{% static 'images/fire.png' %}" alt="Огонь">
+                </div>
+                <h2 class="catalog__title"><a href="{% url 'catalog' %}" class="catalog__title">Категории товаров</a>
+                </h2>
+                <div class="catalog__body">
+                    {% for item in categories %}
+                        <a class="catalog-item" href="{{ item.get_absolute_url }}">
+                            {% if item.image %}
+                                {{ item.get_template_picture_small }}
+                            {% endif %}
+                            {{ item }}
+                        </a>
+                    {% endfor %}
+                </div>
+                <a href="{% url 'catalog' %}" class="btn btn-primary">
+                    <span class="btn__text">Перейти в каталог</span>
+                </a>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    {% if sliders.hit or sliders.sales or sliders.news %}
+    <section class="popular-section">
+        <div class="section-wrapper">
+            <div class="popular__title">
+                Популярные товары
+            </div>
+            <div class="popular-tabs">
+                {% for key, slider in sliders.items %}
+                    {% if slider %}
+                        <label class="popular-tabs_label">
+                            <input type="radio" name="popular-tab" value="{{ key }}" {% if forloop.first %} checked {% endif %}>
+                            <span class="btn btn-primary">
+                                {% if key == 'hit' %}
+                                    Топ продаж
+                                {% elif key == 'sales' %}
+                                    Скидки
+                                 {% else %}
+                                    Новинки
+                                {% endif %}
+                            </span>
+                        </label>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="popular-contents">
+                {% for key, slider in sliders.items %}
+                <div class="popular-content hidden" id="{{ key }}">
+                    {{ slider }}
+                </div>
+                {% endfor %}
+                <div id="preloader_hide" class="preload_mask index-preload_hide">
+                    <div class="pop_preloader"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    <section class="install-section ">
+        {% static 'images/temp/install_bg.webp' as bg %}
+        <div class="install-wrapper" style="background-image: url('{{ bg }}');">
+            <div class="section-wrapper">
+                <div class="install">
+                    <h2 class="install__title">Установка печей и каминов. Монтаж дымоходов</h2>
+                    <div class="install__subtitle">Большой опыт. Адекватные цены. Гарантия качества</div>
+                    <div class="install-body">
+                        <div class="install-item">
+                            <div class="install-item__title">Делают профессионалы</div>
+                            <div class="install-item__description">
+                                Монтаж печного оборудования «под ключ» позволит вам сэкономить время,
+                                деньги и силы. Вам не придеться изучать азы печного дела или обращаться
+                                к «народным умельцам»
+                            </div>
+                        </div>
+                        <div class="install-item">
+                            <div class="install-item__title">Точный расчет</div>
+                            <div class="install-item__description">
+                                Список расходных материалов и их цена будут известны заранее, ведь их будет подбирать
+                                специалист. Не возникнет проблем с недостающими или лишними деталями
+                            </div>
+                        </div>
+                        <div class="install-item">
+                            <div class="install-item__title">Быстро и качественно</div>
+                            <div class="install-item__description">
+                                Мы гарантируем, что при установке печи или камина будут соблюдены все противопожарные
+                                нормы, а также требования к безопасному и качественному монтажу
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{{ uslugi_page.get_absolute_url }}" class="btn btn-primary">
+                        <span class="btn__text">Узнать подробности</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% if brands %}
+        <section class="brands-section">
+            <div class="brands-wrapper">
+                <div class="brands">
+                    <h2 class="brands__title">Производители</h2>
+                    <div class="brands-grid">
+                        {% for brand in brands %}
+                            {% if brand.image %}
+                                <a class="brands-item" href="{{ brand.get_absolute_url }}">
+                                    {{ brand.get_template_picture_medium }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <a href="{% url 'brands' %}" class="btn btn-primary"><span class="btn__text">Показать всех производителей</span></a>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+    {% if reviews %}
+        <section class="reviews-section">
+            <div class="reviews-wrapper">
+                <div class="reviews">
+                    <h2 class="reviews__title"><a href="{{ reviews_page.get_absolute_url|default:'#' }}"
+                                                  class="reviews__title">Отзывы</a></h2>
+                    <div class="reviews-slider-wrapper">
+                        <div class="reviews-slider-arrows">
+                            <div class="reviews-slider-arrow left">
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#dropdown"></use>
+                                </svg>
+                            </div>
+                            <div class="reviews-slider-arrow right">
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#dropdown"></use>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="reviews-slider">
+                            {% for review in reviews %}
+                                <div class="reviews-item">
+                                    <div class="reviews-item-date">{{ review.date_created|date:'d.m.y' }}</div>
+                                    <div class="reviews-item-name">{{ review.author }}</div>
+                                    <div class="reviews-item-message">
+                                        {{ review.message|safe }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <a href="{{ reviews_page.get_absolute_url }}" class="btn btn-primary"><span class="btn__text">Читать все отзывы</span></a>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+    <section class="description-section">
+        <div class="section-wrapper">
+            <div class="description hide content-page">
+                <div class="description-inside content-text">
+                    {% for block in page.get_content_list %}
+                        {{ block.render|safe }}
+                    {% endfor %}
+                </div>
+                {% comment %}
+                <div class="description-btn btn">
+                    <div class="btn__text">Подробнее</div>
+                    <svg role="img">
+                        <use href="/static/images/sprite.svg#dropdown"></use>
+                    </svg>
+                </div>
+                {% endcomment %}
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/indexPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block footer_extra %}
+    <script src="{% static 'js/indexPage.bundle.js' %}?v={{ v }}"></script>
+{% endblock %}

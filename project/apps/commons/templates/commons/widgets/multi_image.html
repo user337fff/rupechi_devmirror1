@@ -1,0 +1,19 @@
+<div id="dropContainer_{{ widget.name }}" for="id_gallery" style="height:100px;border: 2px dashed #79aec8;border-radius: 10px;background-color: #cde4ef;display: flex;align-items: center;justify-content: center;">
+  <span style="font-size: 15px;color: #417590;">Для загрузки картинок перетащите их сюда и сохраните</span>
+</div>
+<input type="{{ widget.type }}" name="{{ widget.name }}" multiple="multiple"{% include "django/forms/widgets/attrs.html" %}>
+
+<script>
+    dropContainer = document.getElementById('dropContainer_{{ widget.name }}');
+    fileInput = document.querySelector('input[name={{ widget.name }}]');
+    
+    dropContainer.ondragover = dropContainer.ondragenter = function(evt) {
+        evt.preventDefault();
+    };
+
+    dropContainer.ondrop = function(evt) {
+    // dont worked in IE
+        fileInput.files = evt.dataTransfer.files;
+        evt.preventDefault();
+    };
+</script>

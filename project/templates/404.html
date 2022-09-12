@@ -1,0 +1,17 @@
+{% extends "pages/page.html" %}
+{% load static %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/404Page.css' %}">
+{% endblock %}
+{% block meta_title %}
+    Страница не найдена
+{% endblock %}
+{% block inside_content %}
+    <div class="section-wrapper">
+        <div class="page_not_found">
+            <h1>Данная страница не существует!</h1>
+            <span>Вы можете <a href='/'>перейти на главную страницу сайта</a></span>
+        </div>
+    </div>
+{% endblock %}

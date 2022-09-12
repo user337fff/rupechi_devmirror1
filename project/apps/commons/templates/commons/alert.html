@@ -1,0 +1,18 @@
+<div class="alert {{ classes }}">
+    <svg role="img" class="alert-icon">
+        <use href="/static/images/sprite.svg#{{ icon|default:'cart' }}"></use>
+    </svg>
+    <div class="alert-info">
+        <div class="alert-info__title">{{ title }}</div>
+        {% if subtitle %}
+            <div class="alert-info__subtitle">{{ subtitle }}</div>
+        {% endif %}
+    </div>
+    <div class="alert-buttons">
+        {% for button in buttons %}
+            <a class="alert-button btn {{ button.type }}" href="{{ button.href|default:'#' }}">
+                <span class="btn__text">{{ button.text }}</span>
+            </a>
+        {% endfor %}
+    </div>
+</div>

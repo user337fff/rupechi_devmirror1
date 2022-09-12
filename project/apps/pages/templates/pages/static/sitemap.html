@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% load mptt_tags static %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/sitemapPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block content %}
+    <section class="sitemap">
+        <div class="section-wrapper">
+            <ul class="root">
+                {% recursetree pages %}
+                    <li>
+                        <a href="{{ node.get_absolute_url }}">{{ node }}</a>
+                        {% if node.template == node.TemplateChoice.CATALOG %}
+                            <ul class="children">
+                                {% recursetree categories %}
+                                    <li>
+                                        <a href="{{ node.get_absolute_url }}">{{ node }}</a>
+                                        {% if not node.is_leaf_node %}
+                                            <ul class="children">
+                                                {{ children }}
+                                            </ul>
+                                        {% endif %}
+                                    </li>
+                                {% endrecursetree %}
+                            </ul>
+                        {% endif %}
+                        {% if not node.is_leaf_node %}
+                            <ul class="children">
+                                {{ children }}
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endrecursetree %}
+            </ul>
+        </div>
+    </section>
+{% endblock content %}

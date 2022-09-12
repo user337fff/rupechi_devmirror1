@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/aboutPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block page_header %}
+{% endblock %}
+
+{% block content %}
+    <section class="about-section">
+        <div class="section-wrapper">
+            <div class="about">
+                <div class="about-header">
+                    <div class="about-header-text">
+                        <div class="about-header-mask"></div>
+                        {% include 'commons/breadcrumbs.html' %}
+                        <h1 class="about-header-text__title">{{ page_info.title }}</h1>
+                        <div class="about-header-text__subtitle">
+                            <p>
+                                <span class="orange">{{ settings.name }}</span>
+                                — это федеральная сеть магазинов печного и отопительного
+                                оборудования, работающая на рынке с 2009 года.
+                                Мы поставляем наши товары розничным и оптовым клиентам напрямую от производителей.
+                                Имеем большой опыт в подборе и монтаже печей, каминов, котлов и отопительных систем.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="about-header-image" ></div>
+                </div>
+                <div class="about-stats">
+                    <div class="about-stats-item">
+                        <div class="about-stats-item__count">5</div>
+                        <div class="about-stats-item__text">городов</div>
+                    </div>
+                    <div class="about-stats-item">
+                        <div class="about-stats-item__count">12</div>
+                        <div class="about-stats-item__text">магазинов</div>
+                    </div>
+                    <div class="about-stats-item">
+                        <div class="about-stats-item__count">2</div>
+                        <div class="about-stats-item__text">
+                            <p>больших</p>
+                            <p>складов</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-stats__text">Торговые центры находятся в Вологде, Ярославле, Иваново, Череповец, Санкт-Петербурге.</div>
+                <div class="about-today">
+                    <div class="about-today__title">Сегодня {{ settings.name }} это:</div>
+                    <div class="about-today-body">
+                        <div class="about-today-item">
+                            <div class="about-today-item-stats">
+                                <div class="about-today-item-stats-item">
+                                    <div class="about-today-item-stats-item__counter">
+                                        70
+                                    </div>
+                                    <div class="about-today-item-stats-item__message">
+                                        отечественных и зарубежных брендов в ассортименте
+                                    </div>
+                                </div>
+                                <div class="about-today-item-stats-item">
+                                    <div class="about-today-item-stats-item__counter">
+                                        2500 <span class="small">м<sup>2</sup></span>
+                                    </div>
+                                    <div class="about-today-item-stats-item__message">
+                                        торговой площади в магазинах
+                                    </div>
+                                </div>
+                                <div class="about-today-item-stats-item">
+                                    <div class="about-today-item-stats-item__counter">
+                                        1800 <span class="small">м<sup>2</sup></span>
+                                    </div>
+                                    <div class="about-today-item-stats-item__message">
+                                        складских помещений
+                                    </div>
+                                </div>
+                            </div>
+                            <img class="about-today-item-image" src="{% static 'images/today_1.png' %}" alt=""/>
+                        </div>
+                        <div class="about-today-item reverse">
+                            <div class="about-today-item-stats">
+                                <div class="about-today-item-stats-item">
+                                    <div class="about-today-item-stats-item__counter">
+                                        3000
+                                    </div>
+                                    <div class="about-today-item-stats-item__message">
+                                        покупателей ежемесячно
+                                    </div>
+                                </div>
+                                <div class="about-today-item-stats-item">
+                                    <div class="about-today-item-stats-item__counter">
+                                        180
+                                    </div>
+                                    <div class="about-today-item-stats-item__message">
+                                        постоянных оптовых клиентов
+                                    </div>
+                                </div>
+                                <div class="about-today-item-stats-item">
+                                    <div class="about-today-item-stats-item__counter">
+                                        <span class="small">Более</span> 50
+                                    </div>
+                                    <div class="about-today-item-stats-item__message">
+                                        сотрудников в компании
+                                    </div>
+                                </div>
+                            </div>
+                            <img class="about-today-item-image" src="{% static 'images/today_2.png' %}" alt=""/>
+                        </div>
+                    </div>
+                </div>
+                {% include 'includes/information.html' %}
+                <div class="content-page">
+                    {% for block in page.get_content_list %}
+                        {{ block.render|safe }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

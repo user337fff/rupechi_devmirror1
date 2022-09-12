@@ -1,0 +1,75 @@
+{% load catalog %}
+{% if is_calc %}
+<span class="cart-table__title">Готово! Комплектация вашего дымохода:</span>
+{% endif %}
+<div class="cart-table__wrapper">
+    <div class="cart-table">
+        <div class="cart-table-line header">
+            <div class="cart-table-cell image">Фото</div>
+            <div class="cart-table-cell title">Наименование товара</div>
+            <div class="cart-table-cell price">Цена</div>
+            <div class="cart-table-cell quantity">Количество</div>
+            <div class="cart-table-cell total">Сумма</div>
+            <div class="cart-table-cell action">Удалить</div>
+        </div>
+        {% for item in cart.items %}
+            {% with item.product.get_storage_info as storage %}
+                <form class="cart-table-line" data-preloader="false"
+                    data-title="{{ item.product.title }}"
+                    data-name="{{ item.product.title }}" data-id="{{ item.product.id }}"
+                    data-price="{{ storage.price }}" data-category="{{ item.product.category }}"
+                    {% if item.product.brand %} data-brand="{{ item.product.brand }}" {% endif %}>
+                    <input type="hidden" name="product" value="{{ item.product.id }}">
+                    <div class="cart-table-cell image
+                            {% if not item.product.image and not item.product.parent.image %}empty{% endif %}">
+                        {% if item.product.image %}
+                            {{ item.product.get_template_picture }}
+                        {% elif item.product.parent %}
+                            {{ item.product.parent.get_template_picture }}
+                        {% else %}
+                            <svg role="img">
+                                <use href="/static/images/sprite.svg#cart"></use>
+                            </svg>
+                        {% endif %}
+                    </div>
+                    <div class="cart-table-cell title">
+                        <a href="{{ item.product.get_absolute_url }}">{{ item.product }}</a>
+                    </div>
+                    <div class="cart-table-cell price" data-price="{{ item.discount_price|default:item.price }}">
+                            <div class="prices">
+                                {% if item.discount_price and domain in domain_discount %}
+                                    <div class="old_price">{{ item.price|convert_price }}</div>
+                                    <div class="price">{{ item.discount_price|convert_price }}</div>
+                                {% else %}
+                                    <div class="price">{{ item.price|convert_price }}</div>
+                                {% endif %}
+                            </div>
+                    </div>
+                    <div class="cart-table-cell quantity">
+                        <label class="input-counter">
+                            <input type="number" name="quantity" class="input-counter-input" data-min="1"
+                                   data-max="{{cart.MAX}}"
+                                   value="{{ item.quantity }}">
+                        </label>
+                    </div>
+                    <div class="cart-table-cell total">{{ item.total|default:0|convert_price }}</div>
+                    <div class="cart-table-cell action">
+                        <svg role="img">
+                            <use href="/static/images/sprite.svg#close"></use>
+                        </svg>
+                    </div>
+                </form>
+            {% endwith %}
+        {% endfor %}
+    </div>
+</div>
+{% if is_calc %}
+ <div class="cart-table__footer">
+    <button class="btn btn-primary">
+        <span class="btn__text">В корзину</span>
+    </button>
+    <div class="cart-table__total">
+        Итого общая стоимость: <span class="total">0 ₽</span>
+    </div>
+</div>
+{% endif %}

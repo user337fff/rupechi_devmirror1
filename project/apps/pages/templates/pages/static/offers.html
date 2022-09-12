@@ -1,0 +1,22 @@
+{% extends 'pages/page.html' %}
+
+{% load static %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/offersPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block footer_extra %}
+    <script src="{% static 'js/offersPage.bundle.js' %}?v={{ v }}"></script>
+{% endblock %}
+
+{% block inside_content %}
+    <div class="offers">
+        <div class="offers-body">
+            {{ items|safe }}
+        </div>
+        <div class="offers-pagination">
+            {{ pagination }}
+        </div>
+    </div>
+{% endblock %}

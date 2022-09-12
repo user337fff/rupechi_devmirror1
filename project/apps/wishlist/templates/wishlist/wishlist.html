@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/wishlistPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block footer_extra %}
+    <script src="{% static 'js/wishlistPage.bundle.js' %}?v={{ v }}"></script>
+{% endblock %}
+
+{% block content %}
+    <section class="wishlist-section">
+        <div class="section-wrapper">
+            <div class="wishlist-empty">
+                {{ empty }}
+            </div>
+            <div class="wishlist">
+                {{ items|safe }}
+            </div>
+            <div class="wishlist-pagination">
+                {{ pagination|safe }}
+            </div>
+        </div>
+    </section>
+{% endblock content %}

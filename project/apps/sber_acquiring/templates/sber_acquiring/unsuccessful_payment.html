@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/orderPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block content %}
+<div class="order-empty">
+    <svg class="order-empty__svg" role="img">
+        <use href="{% static 'images/sprite.svg' %}#close"></use>
+    </svg>
+    <div class="order-empty__title">Не удалось провести оплату заказа {% if id %} <span> №{{ id }}</span> {% endif %}</div>
+    {# <div class="order-empty__subtitle">Менеджер свяжется с Вами в ближайшее время.</div> #}
+    <div class="order-empty__buttons">
+        
+        <a href="/" class="btn btn-primary">
+            <span class="btn__text">На главную</span>
+        </a>
+
+        {% comment %}
+            <a href="{{ settings.vkontakte|default:'#' }}" class="btn__vk">
+                <svg role="img">
+                    <use href="{% static 'images/sprite.svg' %}#vk"></use>
+                </svg>
+            </a>
+        {% endcomment %}
+
+    </div>
+</div>
+{% endblock %}

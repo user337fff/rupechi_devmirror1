@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+	<title>Полезные статьи</title>
+	<link>https://www.rupechi.ru/pages/</link>
+	<description>Полезные статьи</description>
+	<atom:link href="https://www.rupechi.ru/rss/" rel="self">
+	</atom:link>
+	<language>ru</language>
+    <lastBuildDate>{{ str_date }}</lastBuildDate>
+	{% for item in items %}
+		<item turbo="true">
+			<title>{{ item.title }}</title>
+			<link>https://www.rupechi.ru/pages/{{ item.slug }}/</link>
+			<turbo:content>
+				<![CDATA[
+					{% for text in item.texts %}
+						{{ text }}
+					{% endfor %}
+				]]>
+			</turbo:content>
+			<guid>https://www.rupechi.ru/pages/{{ item.slug }}/</guid>
+		</item>
+	{% endfor %}
+</channel>
+</rss>

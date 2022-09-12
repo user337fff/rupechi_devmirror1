@@ -1,0 +1,23 @@
+{% for page in catalog_items %}
+    {% with page.get_subitems.all as children %}
+        <li class="header-bottom-catalog-dropdown-item header-dropdown-link {% if children %}has_children{% endif %}">
+            <a href="{{ page.get_absolute_url }}">
+                {{ page }}
+            </a>
+            {% if children %}
+                <svg role="img">
+                    <use href="/static/images/sprite.svg#dropdown"></use>
+                </svg>
+
+                <ul class="header-dropdown">
+                    {% for child in children %}
+                        <li class="header-dropdown-link"
+                            {% if child.category %}data-type="{{ child.category.type }}"{% endif %}>
+                            <a href="{{ child.get_absolute_url }}">{{ child }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endwith %}
+{% endfor %}

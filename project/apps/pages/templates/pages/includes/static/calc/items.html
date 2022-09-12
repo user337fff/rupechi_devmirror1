@@ -1,0 +1,11 @@
+{% load catalog %}
+<div class="section-wrapper">
+    <div class="calc-items">
+    Думаю тут можно использовать тот же шаблон что и в корзине
+        {% for item in items %}
+            <p>
+            {{ item }}: {{ item.calc_price }} x {{ item.calc_quantity }} = посчитаю на js
+            </p>
+        {% endfor %}
+    </div>
+</div>

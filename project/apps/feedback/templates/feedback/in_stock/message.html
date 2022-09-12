@@ -1,0 +1,39 @@
+{% load catalog %}
+<div class="mail-Message-Body-Content">
+    <div>
+        <table cellpadding="0" cellspacing="0" border="0" width="98%" style="margin:0px 1%;">
+            <tbody>
+            <tr>
+                <td colspan="2">
+                    <p style="margin:0px 0 40px 0;font-size:23px;"><b>Вас приветствует интернет-магазин Жарко</b></p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p style="margin-bottom:10px;">Добрый день,<b style="margin-left:5px;"> менеджер.</b></p>
+                    <p style="margin-bottom:10px;">Клиент {{ email }} установил уведомление о наличии на товар <a href="{{ request.get_host }}/{{ product.get_absolute_url }}">{{ product.title }}</a><b style="margin-left:25px;"></b></p>
+                    <p style="margin-bottom:10px;">Имя: {{ name }}, телефон: <a href="tel:{{ phone }}">{{ phone }}</a></b></p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table style="clear:both;margin:30px 1%;">
+            <tbody>
+            <tr>
+                <td><p style="font-size: 23px;">Спасибо за выбор магазина <a
+                        href="https://{{ request.get_host }}">Жарко</a>!</p></td>
+            </tr>
+            </tbody>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <p style="font-size: 20px;">
+                        <b>Пожалуйста, не отвечайте на это письмо: оно создано автоматически. Связаться с нами можете по почте: kaa@rupechi.ru</b>
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>

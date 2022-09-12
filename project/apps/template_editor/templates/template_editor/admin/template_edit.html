@@ -1,0 +1,89 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_list %}
+{% block extrahead %}
+    {{ block.super }}
+    {{ form.media.js }}
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}{{ form.media.css }}
+<!--Данные стили нужны чтобы расширить селектор выбора шаблона,
+а также вывести его выше чем поле с кодом.-->
+<style>
+span.select2-dropdown {
+    z-index: 10 !important;
+    width: 260px !important;
+}
+</style>
+{% endblock %}
+
+{% if not is_popup %}
+    {% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">Главная{{ opts }}</a>
+        &rsaquo; <a href=".."">Настройки</a>
+        &rsaquo; Редактор шаблонов
+    </div>
+    {% endblock %}
+{% endif %}
+
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            {% for field in form %}
+                <div style="margin-bottom: 10px">
+                {{ field }}
+                </div>
+                <div class="error">{{field.errors}}</div>
+            {% endfor %}
+        </div>
+
+    {% block submit_buttons_bottom %}<input type="submit" value="Сохранить" class="default" name="_save">{% endblock %}
+
+    </form>
+    {% block admin_change_form_document_ready %}
+      <script>
+
+        const templateSelector = document.querySelector('#id_template');
+        // получение токена из кук
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken')
+        // смена содержимого шаблона по селектору
+        function changeTemplate(event) {
+            const template = event.target.value
+            django.jQuery.ajax({
+                url: '../template_content/',
+                headers: {
+                        'X-CSRFToken': csrftoken,
+                    },
+                type: 'POST',
+                data: {template: template},
+                success: function(data) {
+                    myCodeMirror.setValue(data);
+                    const url = window.location.pathname + '?template=' + template ;
+                    window.history.pushState(null, null, url)
+                },
+                error: function() { console.log('error');}
+            });
+        };
+
+        templateSelector.onchange = changeTemplate;
+    </script>
+
+    {% endblock %}
+
+{% endblock %}

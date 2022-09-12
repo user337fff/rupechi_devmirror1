@@ -1,0 +1,22 @@
+{% extends "users/personal/base.html" %}
+
+{% block personal_content %}
+    <h3 class="lk-content__title">Личные данные</h3>
+    <form method="post" class="ajax-form">
+        <label>
+            <span>{{ form.name.label }}</span>
+            {{ form.name }}
+        </label>
+        <label>
+            <span>{{ form.phone.label }}</span>
+            <input type="tel" name="{{ form.phone.name }}" value="{{ form.initial.phone }}">
+        </label>
+        <label>
+            <span>{{ form.email_new.label }}</span>
+            {{ form.email_new }}
+        </label>
+        <button type="submit" class="btn btn-primary">
+            <span class="btn__text">Сохранить</span>
+        </button>
+    </form>
+{% endblock %}

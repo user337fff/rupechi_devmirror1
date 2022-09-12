@@ -1,0 +1,28 @@
+<section class="product-slider-section">
+    <div class="section-wrapper">
+    <div class="product-slider brands" data-slides-to-show="6">
+<!--        <div class="product-slider-header">-->
+<!--            <div class="product-slider__title">Производители</div>-->
+<!--        </div>-->
+        <div class="product-slider-slider">
+            <div class="product-slider-arrows">
+                <div class="product-slider-arrow left">
+                    <svg role="img">
+                        <use href="/static/images/sprite.svg#dropdown"></use>
+                    </svg>
+                </div>
+                <div class="product-slider-arrow right">
+                    <svg role="img">
+                        <use href="/static/images/sprite.svg#dropdown"></use>
+                    </svg>
+                </div>
+            </div>
+            <div class="product-slider__wrapper">
+                {% for brand in brands %}
+                    {{ brand.get_template_picture_medium }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    </div>
+</section>

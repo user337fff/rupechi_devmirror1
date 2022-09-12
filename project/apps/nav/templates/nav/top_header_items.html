@@ -1,0 +1,31 @@
+{% for item in header_items %}
+    {% with item.get_subitems.all as subitems %}
+        {% if subitems %}
+            <li class="header-top-top-nav-item nav-dropdown">
+                <a itemprop="url" href="{{ item.get_absolute_url }}"
+                    class="header-top-top-nav-item-header">
+                    {{ item.title }}
+                    <svg role="img">
+                        <use href="/static/images/sprite.svg#dropdown"></use>
+                    </svg>
+                </a>
+                <ul class="header-top-top-nav-item-dropdown header-dropdown triangle">
+                    {% for subitem in subitems %}
+                        <li class="header-top-top-nav-item-dropdown-item header-dropdown-link">
+                            <a itemprop="url" href="{{ subitem.get_absolute_url }}" class="">
+                                {{ subitem }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% else %}
+            <li class="header-top-top-nav-item">
+                <a itemprop="url" href="{{ item.get_absolute_url }}"
+                    class="header-top-top-nav-item-header">
+                    {{ item }}
+                </a>
+            </li>
+        {% endif %}
+    {% endwith %}
+{% endfor %}

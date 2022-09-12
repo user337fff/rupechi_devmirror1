@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/cooperationPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block page_title %}
+    <h1 class="cooperation__title">Оптовым покупателям</h1>
+{% endblock %}
+
+{% block footer_extra %}
+    <script src="https://unpkg.com/imask"></script>
+    <script src="{% static 'js/cooperationPage.bundle.js' %}?v={{ v }}"></script>
+{% endblock %}
+
+{% block content %}
+    {% include 'pages/includes/static/cooperation.html' %}
+{% endblock %}
+
+{% block modals %}
+    {{block.super}}
+    <div class="custom-modal small" id="cooperationRegister">
+            <div class="custom-modal__wrapper">
+                <div class="custom-modal__header">
+                    <span class="custom-modal-header__title cooperation-modal__title">
+                        Получите доступ к оптовым ценам на <span class="element--b" style="color: #FF4200;" >10 000</span> наших товаров
+                    </span>
+                    <button class="close-modal close-modal-event" type="button">
+                        <svg class="close-modal__svg" role="img">
+                            <use href="/static/images/sprite.svg#close"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="custom-modal__body cooperation-modal__body">
+                    <form class="modal-form ajax-form" method="post" action="{% url 'feedback:coop' %}" onsubmit="ym(38885100, 'reachGoal', 'opt'); return true;">
+                        <label class="input cooperation-modal-input">
+                            <span class="input__name">Название организации</span>
+                            <input type="text" name="title" class="input__input" required>
+                        </label>
+                        <label class="input cooperation-modal-input">
+                            <span class="input__name">ИНН</span>
+                            <input type="text" name="inn" class="input__input" required>
+                        </label>
+                        <div class="input cooperation-modal-input">
+                            <span class="input__name">Ближайший к вам город</span>
+                            <div class="my-select">
+                                <div class="my-select-header">
+                                    <input id="cooperationFormCity" type="hidden" name="city" class="my-select-header__selected">
+                                    <span class="my-select-header__option cooperation-select__placeholder">Выберите город</span>
+                                    <svg role="img" class="my-select-header__svg">
+                                        <use href="/static/images/sprite.svg#dropdown"></use>
+                                    </svg>
+                                </div>
+
+                                <div class="my-select-dropdown cooperation-select-dropdown">
+                                    <div class="my-select-dropdown__wrap" data-simplebar>
+                                        <a href="#"
+                                            class="my-select-dropdown__option"
+                                            data-select="Череповец">Череповец</a>
+                                        <a href="#"
+                                            class="my-select-dropdown__option"
+                                            data-select="Иваново">Иваново</a>
+                                        <a href="#"
+                                            class="my-select-dropdown__option"
+                                            data-select="Ярославль">Ярославль</a>
+                                        <a href="#"
+                                            class="my-select-dropdown__option"
+                                            data-select="Санкт-Петербург">Санкт-Петербург</a>
+                                        <a href="#"
+                                            class="my-select-dropdown__option "
+                                            data-select="Вологда">Вологда</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <label class="input cooperation-modal-input">
+                            <span class="input__name">Сфера деятельности</span>
+                            <input type="text" name="field_of_activity" class="input__input" required>
+                        </label>
+                        <label class="input cooperation-modal-input">
+                            <span class="input__name">ФИО</span>
+                            <input type="text" name="fullname" class="input__input" required>
+                        </label>
+                        <label class="input cooperation-modal-input">
+                            <span class="input__name">Телефон</span>
+                            <input type="tel" name="phone" class="input__input" inputmode="text" pattern="(\+7|8)[\W\w]+[0-9]{3}[\W\w]+[0-9]{3}-[0-9]{2}-[0-9]{2}" required>
+                        </label>
+                         <label class="input cooperation-modal-input">
+                            <span class="input__name">E-mail</span>
+                            <input type="email" name="email" class="input__input" required>
+                        </label>
+                        <button class="btn btn-primary cooperation-modal-btn" type="submit">
+                            <span class="cooperation-modal-btn__text">Зарегистрироваться</span>
+                        </button>
+                    </form>
+                    <p class="cooperation-modal__description">
+                        Нажимая на кнопку, вы принимаете
+                        <a href="/politika-konfidencialnosti/">согласие на обработку данных</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+{% endblock %}

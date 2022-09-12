@@ -1,0 +1,3 @@
+{% for item in object.block.products_items.all %}
+    {% include "catalog/product_card.html" with product=item.product %}
+{% endfor %}

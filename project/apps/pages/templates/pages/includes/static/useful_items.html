@@ -1,0 +1,27 @@
+<a href="{{ item.get_absolute_url }}" class="useful-item" itemprop="blogPosts" itemscope
+   itemtype="http://schema.org/BlogPosting">
+    <div itemprop="articleBody">
+        <meta itemprop="headline" content="{{ item }}">
+        <meta itemprop="datePublished" content="{{ item.pub_date|date:'Y-m-d' }}">
+        <p itemprop="description" content="{{ item.description }}"></p>
+        <meta itemprop="author" content="RuPechi">
+        <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+            <li itemprop="url" content="https://www.rupechi.ru" style="list-style-type: none">
+            <meta itemprop="logo" content="https://www.rupechi.ru/media/images/configuration/logo/logo_6mvrlO2.png">
+            <meta itemprop="name" content="RuPechi">
+            <meta itemprop="address" content="RuPechi">
+            <meta itemprop="telephone" href="tel:+78172506605">
+        </span>
+        <meta itemprop="mainEntityOfPage" content="{{ item.get_absolute_url }}">
+        <meta itemprop="dateModified" content="{{ item.updated_at|date:'Y-m-d' }}">
+        {% if item.image %}
+        <meta itemprop="image" content="{{ item.image.url }}">
+        {% endif %}
+        <span class="useful-item-image" itemscope itemtype="http://schema.org/ImageObject">
+            {% if item.image %}
+                <img src="{{ item.image.url }}" alt="{{ item }}" class="useful-item-image" itemprop="contentUrl">
+            {% endif %}
+        </span>
+        <span class="useful-item__text">{{ item }}</span>
+    </div>
+</a>

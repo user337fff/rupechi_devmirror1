@@ -1,0 +1,1 @@
+Новый заказ №{{ order.id }}  в г {{ request.domain.name }}

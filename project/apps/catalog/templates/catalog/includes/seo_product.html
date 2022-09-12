@@ -1,0 +1,64 @@
+{% if position %}
+<div itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+    <meta itemprop="position" content="{{ position }}">
+<!--    <link itemprop="url" content="{{ product.get_absolute_url }}">-->
+{% endif %}
+    <div itemscope itemtype="http://schema.org/Product">
+        <meta itemprop="mpn" content="" />
+        <meta itemprop="sku" content="" />
+<!--        <meta itemprop="description" content="{{ product.get_description }}">-->
+        {% comment %}
+        {% if product.get_ %}
+        {% endcomment %}
+        <meta itemprop="description" content="{{ product.title }} купить по доступной цене в компании «Жарко»
+        ✅ Доставка и монтаж по всей России ⭐ Подробные характеристики, гарантии, 7 дней на
+         возврат. Помощь консультантов. Заявка онлайн или по телефону ☎: 8 800 250-32-38">
+        {% if product.image %}
+        <meta itemprop="image" content="{{ product.image.url }}">
+        {% endif %}
+        {% if product.brand %}
+        <div itemprop="brand" itemtype="https://schema.org/Brand" itemscope>
+            <meta itemprop="name" content="{{ product.brand }}" />
+        </div>
+        {% endif %}
+        <meta itemprop="name" content="Купить {{ product.title }} в {{ request.domain.name_loct }} по цене {{ storage.discount_price|default:storage.price }} руб.">
+        <link itemprop="url" content="{{ product.get_absolute_url }}">
+        {% with product.get_rating as rating %}
+        {% if rating.count %}
+        <div itemprop="aggregateRating" itemtype="https://schema.org/AggregateRating" itemscope>
+            <meta itemprop="reviewCount" content="{{ rating.count }}">
+            <meta itemprop="ratingValue" content="{{ rating.rating }}">
+        </div>
+        {% endif %}
+        {% endwith %}
+        {% for review in product.reviews.iterator %}
+        <div itemprop="review" itemscope itemtype="https://schema.org/Review">
+            <meta itemprop="author" content="{{ review.author }}">
+            <meta itemprop="datePublished" content="{{ review.date_created }}">
+            <meta itemprop="reviewBody" content="{{ review.message }}">
+        </div>
+        {% endfor %}
+        <div itemscope itemprop="offers" itemtype="http://schema.org/Offer">
+            <meta itemprop="price" content="{{ storage.price }}">
+            <meta itemprop="priceValidUntil" content="2025-12-31">
+            {% if storage.old_price %}
+            <meta itemprop="price" content="{{ storage.old_price }}">
+            {% endif %}
+            {% if storage.price %}
+            <meta itemprop="price" content="{{ storage.discount_price|default:storage.price }}">
+            {% endif %}
+            <meta itemprop="priceCurrency" content="RUB">
+            {% if storage.quantity %}
+            <meta itemprop="availability" content="http://schema.org/InStock"/>
+            {% else %}
+            <meta itemprop="availability" content="http://schema.org/OutOfStock"/>
+            {% endif %}
+
+
+
+            <link itemprop="url" content="{{ product.get_absolute_url }}">
+        </div>
+    </div>
+{% if position %}
+</div>
+{% endif %}

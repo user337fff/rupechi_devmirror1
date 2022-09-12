@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block header_extra %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/testPage.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="section-wrapper">
+    {% include 'catalog/test_product_card.html' %}
+</div>
+{% endblock %}

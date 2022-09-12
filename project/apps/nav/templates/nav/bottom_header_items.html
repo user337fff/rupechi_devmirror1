@@ -1,0 +1,47 @@
+{% for item in header_items %}
+    {% with item.get_subitems.all as subitems %}
+        {% if subitems %}
+            <div class="header-mobile-navigation-item {% if forloop.first %}divider{% endif %}"
+                    data-open-target=".header-mobile-submenu"
+                    data-open-children="true"
+                    data-open-check-parent=".header-mobile-navigation-item">
+                <div class="header-mobile-navigation-item__title"
+                        href="{{ item.get_absolute_url }}">
+                    {{ item }}
+                    <svg class="dropdown-icon">
+                        <use href="/static/images/sprite.svg#dropdown"></use>
+                    </svg>
+                    <div class="header-mobile-submenu">
+                        <div class="header-mobile-navigation-item back"
+                                data-open-target=".header-mobile-submenu"
+                                data-open-parent="true"
+                                data-open-check-parent=".header-mobile-navigation-item">
+                            <div class="header-mobile-navigation-item__title">
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#dropdown"></use>
+                                </svg>
+                                Назад
+                                <div class="fix-center"></div>
+                            </div>
+                        </div>
+                        {% for subitem in subitems %}
+                            <div class="header-mobile-navigation-item white">
+                                <a class="header-mobile-navigation-item__title"
+                                    href="{{ subitem.get_absolute_url }}">
+                                    {{ subitem }}
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="header-mobile-navigation-item {% if forloop.first %}divider{% endif %}">
+                <a href="{{ item.get_absolute_url }}"
+                    class="header-mobile-navigation-item__title">
+                    {{ item }}
+                </a>
+            </div>
+        {% endif %}
+    {% endwith %}
+{% endfor %}

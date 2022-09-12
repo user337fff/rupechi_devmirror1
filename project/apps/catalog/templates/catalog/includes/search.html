@@ -1,0 +1,21 @@
+<ul class="block-search">
+    {% if products %}
+        <li class="block-search-header"><a href="#">Товары</a></li>
+        {% for product in products %}
+            <li><a href="{{ product.get_absolute_url }}">{{ product }}</a></li>
+        {% endfor %}
+    {% endif %}
+    {% if categories %}
+        <li class="block-search-header"><a href="#">Категории</a></li>
+        {% for category in categories %}
+            <li><a href="{{ category.get_absolute_url }}">{{ category }}</a></li>
+        {% endfor %}
+    {% endif %}
+    {% if brands %}
+        <li class="block-search-header"><a href="#">Производители</a></li>
+        {% for brand in brands %}
+            <li><a href="{{ brand.get_absolute_url }}">{{ brand }}</a></li>
+        {% endfor %}
+    {% endif %}
+    <li class="block-search-header"><a href="{% url 'search-page' %}?q={{ q }}">Все результаты</a></li>
+</ul>

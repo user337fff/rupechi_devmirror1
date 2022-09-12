@@ -1,0 +1,18 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        {% if settings.logo %}
+        <img src="{{ settings.logo.url }}" style="height: 100%; width: 100%; max-width: 150px; max-height: 80px;" alt="{{ settings.name }}"/>
+        {% else %}
+        <img src="/static/images/ps-logo.svg" style="height: 100%; width: 100%; max-width: 150px; max-height: 80px;" alt="{{ settings.name }}"/>
+        {% endif %}
+    </a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

@@ -1,0 +1,18 @@
+{% if object.isJS %}
+<script data-myscript {{object.attributes}} >
+    {% if object.timeoutTime %}
+        setTimeout(
+            () => {
+                {{ object.innerHTML|safe }}
+            },
+            {{ object.timeoutTime }}
+        );
+    {% else %}
+        {{ object.innerHTML|safe }}
+    {% endif %}
+</script>
+{% elif object.Element %}
+    <{{ object.tag }} {{ object.attributes }}>
+        {{ object.innerHTML|safe }}
+    </{{ object.tag }}>
+{% endif %}

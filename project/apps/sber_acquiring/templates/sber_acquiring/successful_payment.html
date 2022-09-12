@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% load static catalog %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/orderPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block meta_title %}
+Оплата заказа
+{% endblock %}
+
+{% block footer_extra %}
+    <script src="{% static 'js/orderPage.bundle.js' %}?v={{ v }}"></script>
+{% endblock %}
+
+{% block page_title %}
+{% if not template %} {{ block.super }} {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="order-empty">
+    <svg class="order-empty__svg" role="img">
+        <use href="{% static 'images/sprite.svg' %}#success"></use>
+    </svg>
+    <div class="order-empty__title" style="font-size: 30px">Ваш заказ успешно оплачен!</div>
+    <div class="order-empty__subtitle">Менеджер свяжется с Вами в ближайшее время.</div>
+    <div class="order-empty__buttons">
+        <a href="/" class="btn btn-primary">
+            <span class="btn__text">На главную</span>
+        </a>
+        <a href="{{ settings.vkontakte|default:'#' }}" class="btn__vk">
+            <svg role="img">
+                <use href="{% static 'images/sprite.svg' %}#vk"></use>
+            </svg>
+        </a>
+    </div>
+</div>
+{% endblock %}

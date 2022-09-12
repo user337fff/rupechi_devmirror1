@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/comparePage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block footer_extra %}
+    <script src="{% static 'js/comparePage.bundle.js' %}?v={{ v }}"></script>
+{% endblock %}
+
+{% block title_actions %}
+    <a class="page-header-action btn btn-back" href="{% url 'catalog' %}">
+        <svg role="img">
+            <use href="/static/images/sprite.svg#arrow"></use>
+        </svg>
+        <span class="btn__text">Назад в каталог</span>
+    </a>
+{% endblock %}
+
+{% block content %}
+    <section class="compare-section">
+        <div class="section-wrapper">
+            <div class="compare">
+                <div class="compare-categories">
+                    {{ categories }}
+                </div>
+                <div class="compare-body__wrapper">
+                    {{ body|safe }}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

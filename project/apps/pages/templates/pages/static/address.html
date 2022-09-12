@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/addressPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block footer_extra %}
+    <script src="{% static 'js/addressPage.bundle.js' %}?v={{ v }}"></script>
+{% endblock %}
+
+{% block content %}
+    <section class="address-section">
+        <div class="section-wrapper">
+            <div class="address">
+                <div class="address-tabs">
+                    {% for domain in page.domain.iterator %}
+                        <label>
+                            <input type="radio" name="tab" value="{{ domain }}"
+                                   {% if request.domain == domain %}checked{% endif %}>
+                            <span>
+                                {{ domain.name }}
+                            </span>
+                        </label>
+                    {% endfor %}
+                </div>
+                <div class="address-contents">
+                    {% for domain in page.domain.iterator %}
+                        <div class="address-content {% if domain != request.domain %}d-none{% endif %}"
+                             data-content="{{ domain }}">
+                            {% for store in domain.stores.active.iterator %}
+                                {% if store.lat and store.lon %}
+                                    <div class="address-store">
+                                        <div class="address-store__title">{{ store }}</div>
+                                        {% if store.phone %}
+                                            <div class="address-store__phones">
+                                                {% for phone in store.get_phones %}
+                                                    <a href="tel:{{ phone }}">{{ phone }}</a>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        {% if store.email %}
+                                            <a href="mailto:{{ store.email }}" class="address-store__email">
+                                                {{ store.email }}
+                                            </a>
+                                        {% endif %}
+                                        <div class="address-store__works">
+                                            {% for time in store.get_works %}
+                                                <span>{{ time }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="address-store-map map" id="store_{{ store.id }}" >
+                                            <div class="markers" data-lat="{{ store.lat }}" data-lng="{{ store.lon }}"></div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

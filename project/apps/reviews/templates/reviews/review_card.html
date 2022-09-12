@@ -1,0 +1,6 @@
+<div class="reviews-item">
+    <img src="{{ item.get_image.url }}" alt="{{ item.author }}" class="reviews-item__img">
+    <div class="reviews-item__date">{{ item.date_created|date:'d.m.y' }}</div>
+    <div class="reviews-item__author">{{ item.author }}</div>
+    <div class="reviews-item__message">{{ item.message }}</div>
+</div>

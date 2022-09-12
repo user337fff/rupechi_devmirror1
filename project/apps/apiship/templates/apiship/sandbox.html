@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <title>Форма для ввода адреса с картой</title>
+
+        <style>body, input {
+                    color: #555;
+                    font-size: 14px;
+                    font-family: Helvetica, Arial, sans-serif;
+                }
+
+                input, button {
+                    outline: none;
+                }
+
+                .address {
+                    width: 390px;
+                    margin: 40px auto 0;
+                    padding: 40px 40px 30px;
+                    border: 2px solid #e1e1e1;
+                    background-color: #f7f7f7;
+                    box-shadow: rgba(0, 0, 0, 0.075) 1px 1px 5px;
+                }
+
+                .address h1 {
+                    margin: 0;
+                    padding: 0;
+                    font-size: 20px;
+                    padding-bottom: 40px;
+                    text-align: center;
+                }
+
+                .field {
+                    margin-bottom: 10px;
+                    padding: 0;
+                }
+
+                .field label {
+                    display: block;
+                }
+
+                .field input {
+                    height: 2em;
+                    width: 370px;
+                    border: 1px solid #d8d8d8;
+                    padding: 0 7px;
+                    color: #666;
+                }
+
+                .field [type="radio"] {
+                    height: 1.5em;
+                    width: 20px;
+                    vertical-align: middle;
+                }</style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="address">
+            <h1>Форма для ввода адреса с картой</h1>
+            <div class="col-1">
+                <form class="js-form-address">
+                    <div class="field">
+                        <label>Населенный пункт</label>
+                        <input name="city" type="text">
+                    </div>
+                </form>
+                <div class="addition">
+                    <div class="block">
+                        <p class="title">Текстовое представление адреса</p>
+                        <p id="address" class="value"></p>                    
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div id="map" class="panel-map"></div>
+            </div>
+
+            {{ points }}
+        </div>
+    </body>
+
+        <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+   
+</html>
+
+
+

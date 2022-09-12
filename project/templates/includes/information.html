@@ -1,0 +1,86 @@
+<section class="information-section ">
+    <div class="section-wrapper">
+        <div class="information">
+            {% if main_page and information_title %}
+                <div class="information__title"><h1>{{ information_title }}</h1></div>
+            {% elif information_title %}
+                <div class="information__title"><p class="element--h1">{{ information_title }}</p></div>
+            {% endif %}
+            <div class="information-body">
+                {% if information %}
+                    {% for item in information %}
+                        <div class="information-item">
+                            <div class="information-item-icon">
+                                <svg>
+                                    <use href="/static/images/sprite.svg#{{ item.icon }}"></use>
+                                </svg>
+                            </div>
+                            <div class="information-item-info">
+                                <div class="information-item-title">{{ item.title }}</div>
+                                <div class="information-item-subtitle">{{ item.subtitle }}</div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="information-item">
+                        <div class="information-item-icon">
+                            <svg>
+                                <use href="/static/images/sprite.svg#big_cart"></use>
+                            </svg>
+                        </div>
+                        <div class="information-item-info">
+                            <div class="information-item-title">Надежный магазин</div>
+                            <div class="information-item-subtitle">10 лет продаём печи и камины</div>
+                        </div>
+                    </div>
+                    <div class="information-item">
+                        <div class="information-item-icon">
+                            <svg>
+                                <use href="/static/images/sprite.svg#big_box"></use>
+                            </svg>
+                        </div>
+                        <div class="information-item-info">
+                            <div class="information-item-title">Резерв товара</div>
+                            <div class="information-item-subtitle">На 3 дня и без предоплаты</div>
+                        </div>
+                    </div>
+                    <div class="information-item">
+                        <div class="information-item-icon">
+                            <svg>
+                                <use href="/static/images/sprite.svg#big_outsourcing"></use>
+                            </svg>
+                        </div>
+                        <div class="information-item-info">
+                            <div class="information-item-title">Официальный дилер заводов</div>
+                            <div class="information-item-subtitle">Реализуем только качественную продукцию</div>
+                        </div>
+                    </div>
+                    <div class="information-item">
+                        <div class="information-item-icon">
+                            <!--осуждаю-->
+                            <!--согласен-->
+                            <svg style="stroke: #FFF;fill: none;">
+                                <use href="/static/images/sprite.svg#big_fireplace"></use>
+                            </svg>
+                        </div>
+                        <div class="information-item-info">
+                            <div class="information-item-title">Широкий ассортимент</div>
+                            <div class="information-item-subtitle">Более 3 000 печных товаров в нашем каталоге</div>
+                        </div>
+                    </div>
+                    <div class="information-item">
+                        <div class="information-item-icon">
+                            <svg>
+                                <use href="/static/images/sprite.svg#big_pay_per_click"></use>
+                            </svg>
+                        </div>
+                        <div class="information-item-info">
+                            <div class="information-item-title">Простая покупка</div>
+                            <div class="information-item-subtitle">На сайте в один клик</div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>

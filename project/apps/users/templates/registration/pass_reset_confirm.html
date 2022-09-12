@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header_extra %}
+<link rel="stylesheet" href="{% static 'css/lkPage.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="reset-password">
+    <div class="section-wrapper lk">
+        <div class="lk-content">
+            <form method="post" class="ajax-form">
+                {% for field in form %}
+                <label>
+                    <span>{{ field.label }}</span>
+                    {{ field }}
+                </label>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">
+                    <span class="btn__text">Сохранить</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

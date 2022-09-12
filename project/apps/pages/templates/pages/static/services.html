@@ -1,0 +1,24 @@
+{% extends 'pages/page.html' %}
+
+{% load static %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/servicesPage.css' %}?v={{ v }}">
+{% endblock %}
+
+
+{% block inside_content %}
+    <div class="services">
+        {% for item in page.get_subpages.all %}
+            {% if not forloop.first %}
+                <a class="services-item" href="{{ item.get_absolute_url }}">
+                    {% if item.image %}
+                        {{ item.get_template_picture }}
+                    {% endif %}
+                    {{ item }}
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {{ block.super }}
+{% endblock %}

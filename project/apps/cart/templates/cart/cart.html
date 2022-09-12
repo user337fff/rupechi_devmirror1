@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% load static catalog %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/cartPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block gtag_extra %}
+    <script>
+        // gtag('event', 'page_view', {
+        //
+        // });
+
+        var google_tag_params = {
+            dynx_totalvalue: {{ cart.total|convert_price|floatformat:"0" }},
+            dynx_pagetype: 'conversionintent',
+            ecomm_totalvalue: {{ cart.total|convert_price|floatformat:"0" }},
+            ecomm_pagetype: 'cart'
+        }
+    </script>
+{% endblock %}
+
+{% block footer_extra %}
+    <script src="{% static 'js/cartPage.bundle.js' %}?v={{ v }}"></script>
+{% endblock %}
+
+{% block content %}
+    <section class="cart-section">
+        <div class="section-wrapper">
+            {% if cart.exists %}
+                <div class="cart">
+                    <a href="{% url 'catalog' %}" class="cart-action">
+                        <svg role="img">
+                            <use href="/static/images/sprite.svg#dropdown"></use>
+                        </svg>
+                        Продолжить покупки
+                    </a>
+                    {% include 'cart/cart_table.html' %}
+                    <div class="cart-info">
+                        <div class="cart-info-prices">
+                            <div class="cart-info-price">
+                                <div class="cart-info-price__message">Стоимость заказа:</div>
+                                <div class="cart-info-price__value js-without-discount">{{ cart.total_without_discount|convert_price }}</div>
+                            </div>
+                            {% if domain in domain_discount and cart.discount_total > 0 %}
+                                <div class="cart-info-price">
+                                    <div class="cart-info-price__message">Скидка при заказе с сайта:</div>
+                                    <div class="cart-info-price__value js-discount">{{ cart.discount_total|convert_price }}</div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="cart-info-total">
+                            <div class="cart-info-total__message">Итого:</div>
+                            <div class="cart-info-total__value js-total">{{ cart.total|convert_price }}</div>
+                        </div>
+                        <div class="cart-info-buttons">
+                            <a href="#" class="oneclick btn btn-outline cart_oneclick" data-modal="oneclick">
+                                <span class="btn__text">Купить в 1 клик</span>
+                            </a>
+                            <a href="{% url 'shop:order' %}" class="btn btn-primary order-btn">
+                                <span class="btn__text">Оформить заказ</span>
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#dropdown"></use>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% if domain in domain_discount %}
+                    <div class="product-discount">
+                        <span class="white">Скидка 5%</span>
+                        <span class="white">При оформлении заказа через сайт!</span>
+                        <span>( Кроме продукции компаний Везувий, Гефест, TIS, Protherm, ПроМеталл, Теплодар.)</span>
+                    </div>
+                {% endif %}
+                <div class="coupon-section">
+                    <div class="coupon">
+                        <div class="coupon-info">
+                            <div class="coupon-info-icon">
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#big_track"></use>
+                                </svg>
+                                <span>Привозим все материалы
+                                на объект</span>
+                            </div>
+                            <div class="coupon-info-icon">
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#big_seller"></use>
+                                </svg>
+                                <span>Устанавливаем
+                                и проверяем работу</span>
+                            </div>
+                        </div>
+                        <div class="coupon-form">
+                            <span class="coupon-form__title">Нашли дешевле? Напишите нам и получите купон.</span>
+                            <form class="ajax-form" action="{% url 'feedback:coupon' %}" method="POST">
+                            <div class="coupon-form-line">
+                                <label>
+                                    <textarea name="message" placeholder="Сообщение менеджеру" required></textarea>
+                                </label>
+                            </div>
+                            <div class="coupon-form-line">
+                                <label>
+                                    <input type="email" name="email" placeholder="E-mail" required>
+                                </label>
+                                <label>
+                                    <input type="tel" name="phone" required>
+                                </label>
+                            </div>
+                            <div class="coupon-form-line">
+                                <button class="btn btn-primary" type="submit">
+                                    <span class="btn__text">Отправить</span>
+                                </button>
+                                {% if personal_page %}
+                                    <div class="coupon-form__help_text">
+                                        <div class="coupon-form__help_text__wrapper">
+                                            Нажимая на кнопку, вы соглашаетесь на
+                                            <a href="{{ personal_page.get_absolute_url }}" target="_blank">обработку персональных
+                                                данных</a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                {{ empty }}
+            {% endif %}
+        </div>
+    </section>
+    {{ slider|safe }}
+{% endblock %}

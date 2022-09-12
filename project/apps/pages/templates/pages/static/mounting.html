@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/mountingPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block footer_extra %}
+    <script src="{% static 'js/mountingPage.bundle.js' %}?v={{ v }}"></script>
+{% endblock %}
+
+{% block content %}
+    {% include 'pages/includes/static/mounting.html' %}
+{% endblock %}

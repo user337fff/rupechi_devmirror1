@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load static catalog %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/categoryPage.css' %}?v={{ v }}">
+{% endblock %}
+{% block footer_extra %}
+    <script src="{% static 'js/categoryPage.bundle.js' %}?v={{ v }}"></script>
+{% endblock %}
+
+{% block content %}
+    {% include 'catalog/includes/catalog.html' %}
+    {% include 'includes/information.html' %}
+    {% include 'includes/brands.html' %}
+
+    {% isPaginationPage as isPag %}
+
+    {% if page_info.meta_message and not isPag %}
+
+        <div class="section-wrapper">
+            <div class="content-page">
+                <div class="content-text">
+                    {{ page_info.meta_message|safe }}
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+{% endblock %}

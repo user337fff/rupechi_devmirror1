@@ -1,0 +1,68 @@
+{% load i18n admin_urls static admin_modify models_tags %}
+
+<div class="inline-item inline-item-dynamic inline-item-{{ inline_admin_formset.formset.prefix }} {% if inline_admin_form.original or inline_admin_form.show_url %}has_original{% endif %}" id="{{ inline_admin_formset.formset.prefix }}-{{ forloop.counter0 }}">
+    <div class="inline-item-head">
+        <div class="original">
+            {% if inline_admin_form.original or inline_admin_form.show_url %}
+                <p class="inline-item__title">
+                {{ inline_admin_form.model_admin.verbose_name }}
+                    {% if inline_admin_form.original %}
+                        {{ inline_admin_form.original }}
+                        {% if inline_admin_form.model_admin.show_change_link and inline_admin_form.model_admin.has_registered_model %}
+                            <a href="{% url inline_admin_form.model_admin.opts|admin_urlname:'change' inline_admin_form.original.pk|admin_urlquote %}" class="inlinechangelink">{% trans "Change" %}</a>
+                        {% endif %}
+                    {% endif %}
+                    {% if inline_admin_form.show_url %}
+                        <a href="{{ inline_admin_form.absolute_url }}">{% trans "View on site" %}</a>
+                    {% endif %}
+                </p>
+            {% endif %}
+            {% if inline_admin_form.needs_explicit_pk_field %}
+                {{ inline_admin_form.pk_field.field}}
+            {% endif %}
+            {{ inline_admin_form.fk_field.field }}
+            {% spaceless %}
+                {% for fieldset in inline_admin_form %}
+                    {% for line in fieldset %}
+                        {% for field in line %}
+                            {% if field.field.is_hidden %}
+                                {{ field.field }}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+            {% endspaceless %}
+        </div>
+
+        <div class="inline-item-actions">
+            <a class="inline-item-roll-up" href="#"></a>
+            {% if inline_admin_formset.formset.can_delete %}
+                <label class="inline-item-delete">{% if inline_admin_form.original %}Удалить{{ inline_admin_form.deletion_field.field }}{% endif %}</label>
+            {% endif %}
+            {% if not inline_admin_form.original %}
+            <a class="inline-item-remove" href="#" id="" name="">Удалить</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="inline-item-body">
+        <div class="inline-item-fieldset form-row">
+            {% for fieldset in inline_admin_form %}
+                {% for line in fieldset %}
+                    {% for field in line %}
+                        {% if not field.field.is_hidden %}
+                            <div{% if field.field.name %} class="inline-item-field field-{{ field.field.name }}" {% endif %}>
+                                <p class="inline-item-field__label">{{ field.field.label }}</p>
+                                {% if field.is_readonly %}
+                                    <p>{{ field.contents }}</p>
+                                {% else %}
+                                    {{ field.field.errors.as_ul }}
+                                    {{ field.field }}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>

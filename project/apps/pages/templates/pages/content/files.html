@@ -1,0 +1,17 @@
+<div class="files">
+    <div class="files__wrapper">
+        {% for item in object.block.files_items.all %}
+        <a class="file" href="{{ item.file.url }}" target="_blank">
+            <div class="file-info">
+                <span class="name">{{ item.title }}</span>
+                <span class="size">
+                    <svg role="img">
+                        <use href="/static/images/sprite.svg#file"/>
+                    </svg>
+                    {{ item.extension }} {{ item.get_size }}
+                </span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>

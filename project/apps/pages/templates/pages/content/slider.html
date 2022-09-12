@@ -1,0 +1,4 @@
+{% for slide in object.block.slider_items.all %}
+<p>{{ slide.title }}</p>
+{{ slide.get_template_picture }}
+{% endfor %}

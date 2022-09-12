@@ -1,0 +1,33 @@
+<form action="{% url 'feedback:coop' %}" method="POST" class="ajax-form form">
+    <div class="form-body">
+        <label class="form-line">
+            <span class="form-line__title">Имя и фамилия</span>
+            <input type="text" class="form-line__input"
+                   pattern="^[А-Яа-яЁё\s]+$"
+                   name="name">
+        </label>
+        <label class="form-line">
+            <span class="form-line__title">Email</span>
+            <input type="email" class="form-line__input" name="email">
+        </label>
+        <label class="form-line">
+            <span class="form-line__title">Телефон</span>
+            <input type="tel" class="form-line__input" name="phone">
+        </label>
+        <label class="form-line">
+            <span class="form-line__title">Организация</span>
+            <input type="text" class="form-line__input" name="organization">
+        </label>
+        <label class="form-line">
+            <span class="form-line__title">Сообщение</span>
+            <textarea name="message"></textarea>
+        </label>
+    </div>
+    <button class="btn btn-primary" type="submit">
+        <span class="btn__text">Отправить сообщение</span>
+    </button>
+    <p class="personal-data-link">
+        <span>Нажимая на кнопку, вы соглашаетесь на</span>
+        <a href="/soglasie-na-obrabotku-personalnyh-dannyh/" target="_blank">обработку персональных данных.</a>
+    </p>
+</form>

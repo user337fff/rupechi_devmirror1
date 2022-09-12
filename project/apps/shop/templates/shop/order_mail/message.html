@@ -1,0 +1,143 @@
+{% load catalog %}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% if is_admin %}Новый{% else %}Ваш{% endif %} заказ №{{ order.id }}</title>
+</head>
+
+<body>
+
+<table
+        border="0"
+        cellpadding="0"
+        cellspacing="0"
+        style="margin:0; padding: 60px 20px"
+        width="100%"
+        bgcolor="#e7e7e7">
+    <tr>
+        <td align="center">
+
+            <div style="width: 560px; text-align: left; border: 1px solid #e0e0e0; background-color: #ffffff; margin: 0 auto;">
+                <div style="padding: 10px 30px 13px; border-bottom: 1px solid #e0e0e0; background-color: {{ color }};">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td>
+                                <img src="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ logo.url }}"
+                                     style="max-width: 200px;" alt="" border="0" style="display:block;"/>
+                            </td>
+                            <td align="right" valign="middle">
+                                <a href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}/" target="_blank"
+                                   style="font-family: Arial; font-weight: 700; font-size: 16px; color: #000; text-decoration: none;">{{ request.META.HTTP_HOST }}</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div style="background-color: #f5f5f5; font-family: Arial; font-size: 15px; font-weight: 400; line-height: 20px; color: #1c1c1c; padding: 30px 30px 20px;">
+                    <p style="font-size: 30px; line-height: normal; margin: 0 0 20px;"><b>{% if is_admin %}
+                        Новый{% else %}
+                        Ваш{% endif %} заказ №{{ order.id }}</b></p>
+                    <p style="margin: 10px 0;">ФИО: <b>{{ order.name }}</b></p>
+                    <p style="margin: 10px 0;">Email: <b>{{ order.email }}</b></p>
+                    <p style="margin: 10px 0;">Телефон: <b>{{ order.phone }}</b></p>
+                    {% if order.payment %}
+                        <p style="margin: 10px 0;">Способ оплаты: <b>{{ order.payment }}</b></p>
+                    {% endif %}
+                    {% if order.delivery %}
+                        <p style="margin: 10px 0;">Способ доставки: <b>{{ order.delivery }}</b></p>
+                    {% endif %}
+                    {% if order.comment %}
+                    <p style="margin: 10px 0;">Комментарий: <b>{{ order.comment }}</b></p>
+                    {% endif %}
+                </div>
+                {% if order.address %}
+                    <div style="background-color: #f5f5f5; font-family: Arial; font-size: 15px; font-weight: 400; line-height: 20px; color: #1c1c1c; padding: 30px 30px 20px;">
+                        <p style="font-size: 20px; line-height: normal; margin: 0 0 15px;"><b>Адрес доставки</b></p>
+                        <p style="margin: 10px 0;">Адрес: <b>{{ order.address }}</b></p>
+                    </div>
+                {% endif %}
+                {% if order.store %}
+                    <div style="background-color: #f5f5f5; font-family: Arial; font-size: 15px; font-weight: 400; line-height: 20px; color: #1c1c1c; padding: 30px 30px 20px;">
+                        <p style="font-size: 20px; line-height: normal; margin: 0 0 15px;"><b>Магазин:</b></p>
+                        <p style="margin: 10px 0;">Адрес: <b>{{ order.store.domain.name }}, {{ order.store.address }}</b></p>
+                    </div>
+                {% endif %}
+
+                <div style="padding: 15px 30px 0 30px;">
+                    <table
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            style="margin:0; table-layout: auto"
+                            width="100%">
+
+                        <tr height="25px"
+                            style="font-family: Arial; font-weight: 400; font-size: 13px; color: #1c1c1c; line-height: 20px;">
+                            <td align="left" colspan="2" style="border-bottom: 1px solid #e0e0e0;">Состав заказа</td>
+                            <td align="left" width="65" style="border-bottom: 1px solid #e0e0e0;">Кол-во</td>
+                            <td align="left" width="90" style="border-bottom: 1px solid #e0e0e0;">Сумма</td>
+                        </tr>
+
+                        {% for item in order.get_items %}
+                            <tr style="font-family: Arial; font-weight: 400; font-size: 15px; color: #1c1c1c; vertical-align: top;">
+                                <td width='75' style="border-bottom: 1px solid #e0e0e0; padding: 16px 0;">
+                                    <div>
+                                        {% if item.product.image %}
+                                            <img src="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ item.product.image.url }}" alt=""
+                                                 border="0" width="60" height="60"
+                                                 style="display:block; margin: 0; object-fit: contain;"/>
+                                        {% else %}
+                                            <img src="{{ request.scheme }}://{{ request.META.HTTP_HOST }}/static/images/no-photo.png"
+                                                 alt="" border="0" width="60" height="60"
+                                                 style="display:block; margin: 0;"/>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td width="270" style="border-bottom: 1px solid #e0e0e0; padding: 16px 0;">
+                                    <div style="padding-top: 5px;">
+                                        <p style="font-size: 13px; margin: 0;">
+                                            <a href="https://{{ request.get_host }}{{ item.product.get_absolute_url }}">
+                                            {{ item.get_title }}
+                                            </a>
+                                        </p>
+                                        <p style="font-weight: 700; margin: 0;">{{ item.price|convert_price }}</p>
+                                    </div>
+                                </td>
+                                <td style="border-bottom: 1px solid #e0e0e0; padding: 16px 0;">
+                                    <div style="padding-top: 13px;">
+                                        <p style="margin: 0;">{{ item.quantity }} шт.</p>
+                                    </div>
+                                </td>
+                                <td style="border-bottom: 1px solid #e0e0e0; padding: 16px 0;">
+                                    <div style="padding-top: 16px;">
+                                        <p style="font-weight: 700; margin: 0;">{{ item.total|convert_price }}</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                    </table>
+                    <table style="width: 100%; font-family: Arial; font-weight: 400; font-size: 24px; color: #1c1c1c; padding: 20px 0 25px;">
+                        <tr>
+                            <td align="left" style="padding: 0;">
+                                <p style="margin: 0;"><b>Итого к оплате:</b></p>
+                            </td>
+                            <td align="right" style="padding: 0;">
+                                <p style="margin: 0;"><b>{{ order.total|convert_price }}</b></p>
+                            </td>
+                        </tr>
+                    </table>
+                    <p style="font-size: 14px; text-align: center">
+                        Пожалуйста, не отвечайте на это письмо: оно создано автоматически. Связаться с нами можете по почте: kaa@rupechi.ru
+                    </p>
+                </div>
+            </div>
+
+        </td>
+    </tr>
+</table>
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+{% load catalog %}
+{% if page_obj.has_other_pages %}
+    {% with page_views=page_view|default:1 %}
+        <div class="pagination-wrapper">
+            {% if page_obj.has_next and more %}
+                <a href="#" class="pagination-more" data-page="{{ page_obj.next_page_number }}">
+                    Показать еще
+                </a>
+            {% endif %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <span class="pagination-item first" data-page="{{ page_obj.previous_page_number }}">
+                        <svg role="img" class="rotate-left">
+                            <use href="/static/images/sprite.svg#dropdown"></use>
+                        </svg>
+                        Предыдущая страница
+                    </span>
+                {% else %}
+                    <span class="pagination-item first" style="visibility:hidden;">
+                        <svg role="img" class="rotate-left">
+                            <use href="/static/images/sprite.svg#dropdown"></use>
+                        </svg>
+                        Предыдущая страница
+                    </span>
+                {% endif %}
+                <div class="pagination-items">
+                    {% if page_obj.number > 1|add:page_views %}
+                        <span class="pagination-item"
+                              data-page="1">
+            1
+        </span>
+                    {% endif %}
+                    {% if page_obj.number > 2|add:page_views %}
+                        <span class="pagination-item">
+            <span class="."></span>
+        </span>
+                    {% endif %}
+                    {% for page in page_obj.paginator.page_range %}
+                        {% if page <= page_obj.number|add:page_views and page >= page_obj.number|subtract:page_views %}
+                            <span class="pagination-item {% if page_obj.number == page %}active{% endif %}"
+                                  data-page="{{ page }}">
+            {{ page }}
+        </span>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.number|add:page_views < page_obj.paginator.num_pages|subtract:1 %}
+                        <span class="pagination-item">
+            ...
+        </span>
+                    {% endif %}
+                    {% if page_obj.number|add:page_views <= page_obj.paginator.num_pages|subtract:1 %}
+                        <span class="pagination-item"
+                              data-page="{{ page_obj.paginator.num_pages }}">
+            {{ page_obj.paginator.num_pages }}
+        </span>
+                    {% endif %}
+                </div>
+                {% if page_obj.has_next %}
+                    <span class="pagination-item last" data-page="{{ page_obj.next_page_number }}">
+                        Следующая страница
+                        <svg role="img" class="rotate-right">
+                            <use href="/static/images/sprite.svg#dropdown"></use>
+                        </svg>
+                    </span>
+                {% else %}
+                    <span class="pagination-item last" style="visibility:hidden;">
+                        Следующая страница
+                        <svg role="img" class="rotate-right">
+                            <use href="/static/images/sprite.svg#dropdown"></use>
+                        </svg>
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    {% endwith %}
+{% endif %}

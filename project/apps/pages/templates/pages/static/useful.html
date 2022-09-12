@@ -1,0 +1,20 @@
+{% extends 'pages/page.html' %}
+
+{% load static %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/usefulPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block footer_extra %}
+    <script src="{% static 'js/usefulPage.bundle.js' %}?v={{ v }}"></script>
+{% endblock %}
+
+{% block inside_content %}
+    <div class="useful" itemscope itemtype="https://schema.org/Blog" itemprop="articleBody">
+        {{ items|safe }}
+    </div>
+    <div class="useful-pagination">
+        {{ pagination }}
+    </div>
+{% endblock %}

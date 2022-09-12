@@ -1,0 +1,25 @@
+{% load mptt_tags %}
+{% load static seo catalog %}
+{% get_page_info as page_info %}
+<form class="change-city" method="post" action="{% url 'change_domain' %}">
+
+    {% csrf_token %}
+
+    {% if page %}
+        <input type="hidden" name="app" value="{{ page|get_name }}">
+        <input type="hidden" name="model" value="{{ page|get_model }}">
+        <input type="hidden" name="id" value="{{ page.id }}">
+    {% elif object %}
+        <input type="hidden" name="app" value="{{ object|get_name }}">
+        <input type="hidden" name="model" value="{{ object|get_model }}">
+        <input type="hidden" name="id" value="{{ object.id }}">
+    {% endif %}
+    {% for d in domains %}
+        <label class="change-city-item {% if forloop.first %}first{% endif %} {% if forloop.last %}last{% endif %} {% if d == domain %}close-modal-event{% endif %}">
+            <input type="radio" value="{{ d }}" name="domain"
+                   {% if d == domain %}checked{% endif %}>
+            <span>{{ d.name }}</span>
+        </label>
+    {% endfor %}
+    <input type="submit">
+</form>

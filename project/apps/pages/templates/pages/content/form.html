@@ -1,0 +1,55 @@
+<div class="mounting-form">
+    <div class="mounting-form-info">
+        <div class="mounting-form-info__title">Оставьте заявку на расчет стоимости монтажа</div>
+        <div class="mounting-form-info__subtitle">
+            Мы перезвоним вам, чтобы уточнить детали, и <span class="orange">бесплатно</span> рассчитаем
+            стоимость и сроки монтажа.
+        </div>
+    </div>
+    <form class="mounting-form-body ajax-form" method="POST" action="{% url 'feedback:mounting' %}">
+        <div class="mounting-form-line">
+            <label class="mounting-form-cell">
+                <input type="text" name="name" placeholder="Имя" required>
+            </label>
+            <label class="mounting-form-cell">
+                <input type="tel" name="phone" placeholder="Телефон" required>
+            </label>
+        </div>
+        <div class="mounting-form-line">
+            <div class="my-select">
+                <div class="my-select-header">
+                    <input type="hidden" name="device" class="my-select-header__selected" value="Котел">
+                    <span class="my-select-header__option">Какой отопительный прибор вам нужно установить?</span>
+                    <svg role="img" class="my-select-header__svg">
+                        <use href="/static/images/sprite.svg#dropdown"></use>
+                    </svg>
+                </div>
+                <div class="my-select-dropdown">
+                    <div class="my-select-dropdown__wrap" data-simplebar>
+                        <a href="#"
+                           class="my-select-dropdown__option"
+                           data-select="Котел">Котел</a>
+                        <a href="#"
+                           class="my-select-dropdown__option"
+                           data-select="Печь">Печь</a>
+                        <a href="#"
+                           class="my-select-dropdown__option"
+                           data-select="Камин">Камин</a>
+                        <a href="#"
+                           class="my-select-dropdown__option"
+                           data-select="Дымоход">Дымоход</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mounting-form-line submit-line">
+            <button class="btn btn-primary btn-green"><span class="btn__text">Получить расчет</span></button>
+            {% if personal_page %}
+            <div class="mounting-form__help_text">
+                Нажимая на кнопку, вы соглашаетесь
+                на <a href="{{ personal_page.get_absolute_url }}"  target="_blank">обработку персональных данных</a>
+            </div>
+            {% endif %}
+        </div>
+    </form>
+</div>

@@ -1,0 +1,11 @@
+<label class="compare-categories-item">
+    <input type="radio" value="all" name="category" {% if not current_category or current_category not in categories %}checked{% endif %}>
+    <span>Все {{ quantity }}</span>
+</label>
+{% for category in categories %}
+    <label class="compare-categories-item">
+        <input type="radio" value="{{ category.id }}" name="category"
+               {% if category == current_category %}checked{% endif %}>
+        <span>{{ category }} {{ category.counter }}</span>
+    </label>
+{% endfor %}

@@ -1,0 +1,9 @@
+{% autoescape off %}
+{% if action == 'reset' %}
+Ваш новый пароль {{ password }} на сайте {{ domain }}
+{% else %}
+Спасибо за регистрацию на сайте {{ domain }}, ваш пароль {{ password }}
+{% endif %}
+Здравствуйте!
+{% if request.is_secure %}http{% else %}https{% endif %}://{{ domain }}
+{% endautoescape %}

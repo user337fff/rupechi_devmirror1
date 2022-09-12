@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="order-empty">
+    <svg class="order-empty__svg" role="img">
+        <use href="{% static 'images/sprite.svg' %}#success"></use>
+    </svg>
+    <div class="order-empty__title">Спасибо за заявку! Ваш заказ успешно оплачен!</div>
+    <div class="order-empty__subtitle">Менеджер свяжется с Вами в ближайшее время.</div>
+    <div class="order-empty__buttons">
+        <a href="/" class="btn btn-primary">
+            <span class="btn__text">На главную</span>
+        </a>
+        <a href="{{ settings.vkontakte|default:'#' }}" class="btn__vk">
+            <svg role="img">
+                <use href="{% static 'images/sprite.svg' %}#vk"></use>
+            </svg>
+        </a>
+    </div>
+</div>
+{% endblock %}

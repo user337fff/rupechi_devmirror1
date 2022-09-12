@@ -1,0 +1,33 @@
+{% load nav_tags %}
+{% load mptt_tags %}
+{% load static seo catalog %}
+{% for item in footer_items %}
+    <div class="footer-center-group__wrapper">
+        <div class="footer-center-group">
+            <span class="footer-center-item title">{{ item }}</span>
+            {% for subitem in item.subitems.iterator %}
+                <a href="{{ subitem.get_absolute_url }}" class="footer-center-item">{{ subitem }}</a>
+            {% endfor %}
+        </div>
+        {% if forloop.last %}
+            <div class="footer-center-group cities change-city"
+                    data-action="{% url 'change_domain' %}"
+                    {% if page %}
+                    data-app="{{ page|get_name }}"
+                    data-model="{{ page|get_model }}"
+                    data-id="{{ page.id }}"
+                    {% elif object %}
+                    data-app="{{ object|get_name }}"
+                    data-model="{{ object|get_model }}"
+                    data-id="{{ object.id }}"
+                    {% endif %}
+            >
+                <span class="footer-center-item title">Города</span>
+                {% for domain in domains %}
+                    <a href="#" class="footer-center-item"
+                        data-domain="{{ domain }}">{{ domain.name }}</a>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endfor %}

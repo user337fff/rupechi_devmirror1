@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head itemscope itemtype="http://schema.org/WPHeader">
+
+    {% load nav_tags %}
+    {% load mptt_tags %}
+    {% load static seo catalog %}
+    {% get_page_info as page_info %}
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta charset="UTF-8"/>
+    {% if settings.favicon %}
+        <link rel="icon" href="{{ settings.favicon.url }}" type="image/x-icon">
+        <link rel="apple-touch-icon" href="{{ settings.favicon.url }}">
+    {% endif %}
+    <!-- Seo -->
+    <link rel="canonical" href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.META.PATH_INFO }}"/>
+    <title itemprop="headline">{% block meta_title %}{{ page_info.meta_title }}{% endblock %}</title>
+    <meta itemprop="description" name="description" content="{{ page_info.meta_description }}">
+    <meta itemprop="keywords" name="keywords" content="{{ settings.meta_keywords }}">
+    <meta property="og:title" content="{{ page_info.meta_title }}">
+    <meta property="og:description" content="{{ page_info.meta_description }}">
+    <meta property="og:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.META.PATH_INFO }}"/>
+    <link rel="stylesheet" href="{% static 'css/banner.css' %}">
+    {% if page_info.noindex %}
+        <meta name="googlebot" content="noindex">
+    {% endif %}
+    {% if object.image %}
+        <meta property="og:image"
+              content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ object.image_l.url }}"/>
+    {% elif settings.favicon %}
+        <meta property="og:image"
+              content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ settings.favicon.url }}"/>
+    {% endif %}
+    <meta property="og:type" content="website"/>
+    <meta name="yandex-verification" content="aa57721eaae519d6" />
+
+     {% block header_extra %}
+        <link rel="stylesheet" href="{% static 'css/basePage.css' %}?v={{ v }}">
+    {% endblock header_extra %}
+
+    {{ domain.element_groups.all.first.get_header.collect_scope|safe }}
+
+    {% comment %}
+        {{ domain.header_extra|safe }}
+    {% endcomment %}
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){window.dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+<!--    <script type="text/javascript">!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?169",t.onl oad=function(){VK.Retargeting.Init("VK-RTRG-379980-1Jq2H"),VK.Retargeting.Hit()},document.head.appendChild(t)}();</script><noscript><img src="https://vk.com/rtrg?p=VK-RTRG-379980-1Jq2H" style="position:fixed; left:-999px;" alt=""/></noscript>-->
+
+    <!-- dynx and ecomm params for GTM -->
+    {% block gtag_extra %}
+    <!--параметры gtag для гугл аналитики-->
+    {% endblock %}
+
+
+    {% if 'spb' not in domain.domain %}
+        <meta name="google-site-verification" content="Eh7-JXk0__h2Gt7W1UPAnYMaWYtXWv2IzwwH6Ky3xGs" />
+    {% endif %}
+
+
+</head>
+<body id="body">
+
+<header style="z-index: 7;">
+    <div id="warning-banner">
+        <p id="focus-banner" style="
+        background-color: #FF8D00;
+       font-size: 16px;
+       color: white;
+       text-align: center;
+       padding: 10px;
+       font-size: 17px;
+       position: fixed;
+       bottom: 0;
+       left: 0;
+       z-index: 50;
+       width: 100%;
+       ">В связи с нестабильностью курсов валют, пожалуйста уточните у менеджера актуальную цену при заказе.</p>
+    <span id="banner-close" class="close-banner"></span>
+    </div>
+    <div class="header">
+
+        <div class="header-top">
+            <div class="section-wrapper">
+                {% if settings.logo %}
+                    <a href="/" class="header-top-logo">
+                        <img src="{{ settings.logo.url }}" alt="{{ settings.name }}">
+                    </a>
+                {% endif %}
+                <div class="header-top-wrapper">
+                    <div class="header-top-top">
+                        <ul itemscope itemtype="http://www.schema.org/SiteNavigationElement" class="header-top-top-nav">
+                            {% get_top_header_items %}
+                        </ul>
+                        {% if settings.vkontakte %}
+                            <div class="header-top-top-socials">
+                                <a href="{{ settings.vkontakte }}" target="_blank">
+                                    <svg role="img">
+                                        <use href="/static/images/static-sprite.svg#vk"></use>
+                                    </svg>
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="header-top-bottom">
+                        <div class="header-top-bottom__wrapper">
+                            {% if calc_page %}
+                                <a href="{{ calc_page.get_absolute_url }}" class="header-top-bottom-item">
+                                    <svg role="img" class="header-top-bottom-item__icon">
+                                        <use href="/static/images/sprite.svg#calc"></use>
+                                    </svg>
+                                    <span class="header-top-bottom-item__body">
+                                        <span class="header-top-bottom-item__title">
+                                            {{ calc_page.full_title|default:calc_page.title }}
+                                        </span>
+                                    </span>
+                                </a>
+                            {% endif %}
+                            <a href="{% url 'pages:address' %}" class="header-top-bottom-item">
+                                <svg role="img" class="header-top-bottom-item__icon">
+                                    <use href="/static/images/sprite.svg#shops"></use>
+                                </svg>
+                                <span class="header-top-bottom-item__body">
+                                <span class="header-top-bottom-item__title">Магазины</span>
+                            </span>
+                            </a>
+                            <div class="header-top-bottom-item city">
+                                <svg role="img" class="header-top-bottom-item__icon">
+                                    <use href="/static/images/sprite.svg#nav"></use>
+                                </svg>
+                                <span class="header-top-bottom-item__body">
+                                <span class="header-top-bottom-item__mute">
+                                    Ваш город:
+                                    <span class="header-top-bottom-item__title"
+                                          data-modal="change_city">{{ domain.name }}</span>
+                                </span>
+
+                            </span>
+                            </div>
+                            <a href="tel:{{ domain.phone }}" class="header-top-bottom-item phone">
+                            <span class="header-top-bottom-item__body">
+                                <span class="header-top-bottom-item__help_text">Бесплатный звонок по России</span>
+                                <span class="header-top-bottom-item__title">{{ domain.phone }}</span>
+                            </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom" itemscope itemtype="https://schema.org/WebSite">
+            <li itemprop="url" content="https://{{ domain.domain }}/" style="list-style-type: none">
+            <div class="section-wrapper">
+                <div class="header-bottom-catalog">
+                    <a href="{% url 'catalog' %}" class="header-bottom-catalog-header">
+                        <svg role="img" class="hamburger_icon">
+                            <use href="/static/images/sprite.svg#hamburger"></use>
+                        </svg>
+                        <span>Каталог товаров</span>
+                        <svg role="img" class="dropdown_icon">
+                            <use href="/static/images/sprite.svg#dropdown"></use>
+                        </svg>
+                    </a>
+                    <ul class="header-bottom-catalog-dropdown header-dropdown triangle">
+                        {% get_top_catalog_items %}
+                    </ul>
+                </div>
+                <form method="GET" class="header-bottom-search" action="{% url 'search-page' %}" itemprop="potentialAction" itemscope itemtype="https://schema.org/SearchAction">
+                    <div class="header-bottom-search__wrapper">
+                        <meta itemprop="target" content="https://{{ domain.domain }}/search/?q={q}">
+                        <input type="text" itemprop="query-input" name="q" placeholder="Искать товар в каталоге" value="{{ q|default:'' }}" required>
+                        <button type="submit" class="header-bottom-search-icon">
+                            <svg role="img">
+                                <use href="/static/images/sprite.svg#search"></use>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="header-bottom-search-result">
+                    </div>
+                </form>
+                <div class="header-bottom-actions">
+                    <a href="{% url 'compare:list' %}" class="header-bottom-actions-item">
+                        <div class="header-bottom-actions-item__counter counter compare">{{ compare.count }}</div>
+                        <svg role="img" class="header-bottom-actions-item__icon">
+                            <use href="/static/images/sprite.svg#compare"></use>
+                        </svg>
+                    </a>
+                    <a href="{% url 'wishlist:list' %}" class="header-bottom-actions-item">
+                        <div class="header-bottom-actions-item__counter counter favorite">{{ wishlist.count }}</div>
+                        <svg role="img" class="header-bottom-actions-item__icon" style="fill: none; stroke: #FFF;">
+                            <use href="/static/images/sprite.svg#favorite"></use>
+                        </svg>
+                    </a>
+                    <div class="header-bottom-actions-item nav-dropdown">
+                        <svg role="img" class="header-bottom-actions-item__icon">
+                            <use href="/static/images/sprite.svg#user"></use>
+                        </svg>
+                        <ul class="header-top-top-nav-item-dropdown header-dropdown triangle">
+                            {% if request.user.is_authenticated %}
+                                <li class="header-top-top-nav-item-dropdown-item header-dropdown-link">
+                                    <a href="{% url 'user-update' %}">
+                                        Личный кабинет
+                                    </a>
+                                </li>
+                                <li class="header-top-top-nav-item-dropdown-item header-dropdown-link">
+                                    <a href="{% url 'logout' %}">
+                                        Выйти
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="header-top-top-nav-item-dropdown-item header-dropdown-link">
+                                    <a href="#" class="" data-modal="user-login">
+                                        Войти
+                                    </a>
+                                </li>
+                                <li class="header-top-top-nav-item-dropdown-item header-dropdown-link">
+                                    <a href="#" class="" data-modal="user-register">
+                                        Регистрация
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <a href="{% url 'cart:cart_detail' %}" class="header-bottom-actions-item">
+                        <svg role="img" class="header-bottom-actions-item__icon">
+                            <use href="/static/images/sprite.svg#cart"></use>
+                        </svg>
+                        <span class="header-bottom-actions-item__title">Корзина</span>
+                        <span class="header-bottom-actions-item__big_counter counter cart">{{ cart.count }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-mobile">
+        <div class="header-mobile-header">
+            <div class="section-wrapper header-mobile-header__wrapper">
+                <a href="tel:{{ domain.phone }}">
+                    <svg role="img">
+                        <use href="/static/images/sprite.svg#phone"></use>
+                    </svg>
+                </a>
+                <a href="/">
+                    <img src="{% static 'images/temp/mobile_logo.png' %}" alt="{{ settings.name }}">
+                </a>
+                <span class="hamburger" data-open-target=".header-mobile" data-class="opened" data-no-scroll="body">
+                    <span class="hamburger__line"></span>
+                </span>
+            </div>
+        </div>
+        <div class="header-mobile__menu">
+            <div class="header-mobile__menu_wrapper">
+                <div class="header-mobile-navigation-item white" id="mobile-catalog-item"
+                         data-open-target=".header-mobile-submenu"
+                         data-open-children="true"
+                         data-open-check-parent=".header-mobile-navigation-item">
+                        <div class="header-mobile-navigation-item__title">
+                            <svg role="img">
+                                <use href="/static/images/sprite.svg#hamburger"></use>
+                            </svg>
+                            Каталог товаров
+                            <svg class="dropdown-icon">
+                                <use href="/static/images/sprite.svg#dropdown"></use>
+                            </svg>
+                            <div class="header-mobile-submenu">
+                                <div class="header-mobile-navigation-item back"
+                                     data-open-target=".header-mobile-submenu"
+                                     data-open-parent="true"
+                                     data-open-check-parent=".header-mobile-navigation-item">
+                                    <div class="header-mobile-navigation-item__title">
+                                        <svg role="img">
+                                            <use href="/static/images/sprite.svg#dropdown"></use>
+                                        </svg>
+                                        Назад
+                                        <div class="fix-center"></div>
+                                    </div>
+                                </div>
+                                {% get_middle_catalog_items %}
+                            </div>
+                        </div>
+                    </div>
+                <div class="header-mobile-menu">
+                    <div class="header-mobile-navigation-item white">
+                        <a class="header-mobile-navigation-item__title" href="{% url 'cart:cart_detail' %}">
+                            <svg role="img">
+                                <use href="/static/images/sprite.svg#cart"></use>
+                            </svg>
+                            Корзина
+                            <span class="header-mobile-navigation-item__counter counter cart">{{ cart.count }}</span>
+                        </a>
+                    </div>
+                    <div class="header-mobile-navigation-item white">
+                        <a class="header-mobile-navigation-item__title" href="{% url 'wishlist:list' %}">
+                            <svg role="img">
+                                <use href="/static/images/sprite.svg#favorite"></use>
+                            </svg>
+                            Избранное
+                            <span class="header-mobile-navigation-item__counter counter wishlist">{{ wishlist.count }}</span>
+                        </a>
+                    </div>
+                    <div class="header-mobile-navigation-item white">
+                        <a class="header-mobile-navigation-item__title" href="{% url 'compare:list' %}">
+                            <svg role="img">
+                                <use href="/static/images/sprite.svg#compare"></use>
+                            </svg>
+                            Сравнение
+                            <span class="header-mobile-navigation-item__counter counter compare">{{ compare.count }}</span>
+                        </a>
+                    </div>
+                    <div class="header-mobile-navigation-item white"
+                         data-open-target=".header-mobile-submenu"
+                         data-open-children="true"
+                         data-open-check-parent=".header-mobile-navigation-item">
+                        <a class="header-mobile-navigation-item__title" href="#">
+                            <svg role="img">
+                                <use href="/static/images/sprite.svg#nav"></use>
+                            </svg>
+                            Город:<span class="pick-city">{{ domain.name }}</span>
+                            <svg class="dropdown-icon">
+                                <use href="/static/images/sprite.svg#dropdown"></use>
+                            </svg>
+                        </a>
+                        <div class="header-mobile-submenu change-city"
+                             data-action="{% url 'change_domain' %}"
+                                {% if page %}
+                             data-app="{{ page|get_name }}"
+                             data-model="{{ page|get_model }}"
+                             data-id="{{ page.id }}"
+                                {% elif object %}
+                             data-app="{{ object|get_name }}"
+                             data-model="{{ object|get_model }}"
+                             data-id="{{ object.id }}"
+                                {% endif %}
+                        >
+                            <div class="header-mobile-navigation-item back"
+                                 data-open-target=".header-mobile-submenu"
+                                 data-open-parent="true"
+                                 data-open-check-parent=".header-mobile-navigation-item">
+                                <div class="header-mobile-navigation-item__title">
+                                    <svg role="img">
+                                        <use href="/static/images/sprite.svg#dropdown"></use>
+                                    </svg>
+                                    Назад
+                                    <div class="fix-center"></div>
+                                </div>
+                            </div>
+                            {% for domain in domains %}
+                                <div class="header-mobile-navigation-item white" data-domain="{{ domain }}">
+                                    <a class="header-mobile-navigation-item__title" href="#">
+                                        <svg role="img">
+                                            <use href="/static/images/sprite.svg#nav"></use>
+                                        </svg>
+                                        {{ domain.name }}
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="header-mobile-navigation-item white"
+                         data-open-target=".header-mobile-submenu"
+                         data-open-children="true"
+                         data-open-check-parent=".header-mobile-navigation-item">
+                        <div class="header-mobile-navigation-item__title">
+                            <svg role="img">
+                                <use href="/static/images/sprite.svg#search"></use>
+                            </svg>
+                            Поиск
+                            <svg class="dropdown-icon">
+                                <use href="/static/images/sprite.svg#dropdown"></use>
+                            </svg>
+                            <div class="header-mobile-submenu">
+                                <div class="header-mobile-navigation-item back"
+                                     data-open-target=".header-mobile-submenu"
+                                     data-open-parent="true"
+                                     data-open-check-parent=".header-mobile-navigation-item">
+                                    <div class="header-mobile-navigation-item__title">
+                                        <svg role="img">
+                                            <use href="/static/images/sprite.svg#dropdown"></use>
+                                        </svg>
+                                        Назад
+                                        <div class="fix-center"></div>
+                                    </div>
+                                </div>
+                                <form class="header-mobile-form" action="{% url 'search-page' %}">
+                                    <input type="text" class="header-mobile-navigation-item" name="q"
+                                           placeholder="Поиск товаров">
+                                    <button class="btn btn-primary header-mobile-navigation-item" type="submit">
+                                        <span class="btn__text">Найти</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% if calc_page %}
+                        <div class="header-mobile-navigation-item white">
+                            <a class="header-mobile-navigation-item__title" href="{{ calc_page.get_absolute_url }}">
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#calc"></use>
+                                </svg>
+                                {{ calc_page.full_title|default:calc_page.title }}
+                            </a>
+                        </div>
+                    {% endif %}
+                    {% if request.user.is_authenticated %}
+                        <div class="header-mobile-navigation-item white">
+                            <a class="header-mobile-navigation-item__title" href="{% url 'user-update' %}">
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#user"></use>
+                                </svg>
+                                Личный кабинет
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="header-mobile-navigation-item white">
+                            <a class="header-mobile-navigation-item__title" href="#" data-modal="user-login">
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#login_icon"></use>
+                                </svg>
+                                Войти
+                            </a>
+                        </div>
+                        <div class="header-mobile-navigation-item white">
+                            <a class="header-mobile-navigation-item__title" href="#" data-modal="user-register">
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#signup_icon"></use>
+                                </svg>
+                                Регистрация
+                            </a>
+                        </div>
+                    {% endif %}
+                    <div class="header-mobile-navigation-item white">
+                        <a class="header-mobile-navigation-item__title" href="{% url 'pages:address' %}">
+                            <svg role="img">
+                                <use href="/static/images/sprite.svg#shops"></use>
+                            </svg>
+                            Адреса магазинов
+                        </a>
+                    </div>
+                    {% get_bottom_header_items %}
+                </div>
+                <div class="header-mobile-footer">
+                    <div class="header-mobile-footer__wrapper">
+                        <a href="tel:{{ domain.phone }}" class="header-mobile-footer-phone">
+                            {{ domain.phone }}
+                        </a>
+                        <div class="header-mobile-footer__text">
+                            Бесплатный звонок по России
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+<div class="preloader" style="display: none;">
+    <img src="{% static 'images/preloader.gif' %}" alt="preloader">
+</div>
+    {% block page_header %}
+        {% if not only_seo %}
+            {% if not hide_title or page_info.breadcrumbs %}
+                <section class="page-header-section">
+                    <div class="section-wrapper">
+                        <div class="btn btn-primary page-header-mobile-catalog">
+                            <div class="btn__text">Каталог товаров</div>
+                        </div>
+                        {% if page_info.breadcrumbs %}
+                            <div class="page-header__wrapper">
+                                {% include 'commons/breadcrumbs.html' %}
+                                {% block title_actions %}
+                                {% endblock %}
+                            </div>
+                        {% endif %}
+                        {% block page_title %}
+                            {% if not hide_title %}
+                                <div class="page-header-title">
+                                    <h1 class="page-header__title">{{ page_info.full_title }}</h1>
+                                    {% block page_header_action %}
+
+                                    {% endblock page_header_action %}
+                                </div>
+                            {% endif %}
+                        {% endblock %}
+                    </div>
+                </section>
+            {% endif %}
+        {% endif %}
+    {% endblock %}
+    {% block content %}
+    {% endblock content %}
+</main>
+<footer itemscope itemtype="http://schema.org/WPFooter">
+    <meta itemprop="copyrightYear" content="2021">
+       <meta itemprop="copyrightHolder" content='ООО "Жарко"'>
+    <div class="footer-feedback">
+        <div class="section-wrapper">
+            <div class="footer-feedback-wrapper">
+                <div class="footer-feedback-message">
+                    <svg class="footer-feedback-message__icon" role="img">
+                        <use href="/static/images/sprite.svg#message"></use>
+                    </svg>
+                    <div class="footer-feedback-message-detail">
+                        <span class="footer-feedback-message__title">Подпишитесь на рассылку</span>
+                        <span class="footer-feedback-message__subtitle">Получайте актуальную информацию о скидках и акциях</span>
+                    </div>
+                </div>
+                <form class="footer-feedback-form__wrapper ajax-form" method="post" action="{% url 'feedback:subscribe' %}">
+                    <div class="footer-feedback-form">
+                        <input type="email" name="email" placeholder="Введите ваш email" required>
+                        <button type="submit" class="btn btn-primary">
+                            <span class="btn__text">Подписаться</span>
+                        </button>
+                    </div>
+                    {% if personal_page %}
+                        <div class="footer-feedback-form__message">
+                            Нажимая кнопку «Подписаться», вы соглашаетесь на получение рассылки и
+                            <a href="{{ personal_page.get_absolute_url }}" target="_blank">обработку данных</a>
+                        </div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="footer-center">
+        <div class="section-wrapper footer-center-wrapper">
+            <div class="footer-center-grid">
+                <div class="footer-center-group__wrapper">
+                    <div class="footer-center-group">
+                        <span class="footer-center-item title">Каталог</span>
+                        {% get_bottom_catalog_items %}
+                    </div>
+                </div>
+                {% get_footer_items %}
+            </div>
+            {% comment %}
+            <div class="footer-center-vk">
+                <!-- VK Widget -->
+                <div id="vk_groups"></div>
+            </div>
+            {% endcomment %}
+        </div>
+    </div>
+    <div class="footer">
+        <div class="section-wrapper">
+            <div class="footer-wrapper">
+                <div class="footer-block addresses" itemscope itemtype="http://schema.org/Organization">
+                    <div class="footer-block__title" itemprop="name">Магазины г. {{ domain.name }}</div>
+                    <div class="footer-block__body">
+                        {% for shop in shops %}
+                            <div class="footer-block-item">
+                                <div class="footer-block-item__line" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">{{ domain.name }}, {{ shop.address }}</div>
+                                {% for phone in shop.get_phones %}
+                                    <a href="tel:{{ phone }}" class="footer-block-item__line" itemprop="telephone">
+                                        {{ phone }}
+                                    </a>
+                                {% endfor %}
+                                <a href="mailto:{{ shop.email }}" class="footer-block-item__line" itemprop="email">{{ shop.email }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="footer-block">
+                    {% if settings.vkontakte %}
+                        <div class="footer-block__body" style="margin-bottom: 15px;">
+                            <a href="{{ settings.vkontakte }}" target="_blank">
+                                <svg role="img">
+                                    <use href="/static/images/static-sprite.svg#vk"></use>
+                                </svg>
+                            </a>
+                        </div>
+                    {% endif %}
+<!--                    <div class="footer-block__title">Способы оплаты</div>-->
+                    <div class="footer-block__body images">
+                        <img src="{% static 'images/temp/jcb.png' %}" alt="jsb">
+                        <img src="{% static 'images/temp/master_card.png' %}" alt="master_card">
+                        <img src="{% static 'images/temp/mir.png' %}" alt="mir">
+                        <img src="{% static 'images/temp/visa.png' %}" alt="visa">
+                        <img src="{% static 'images/temp/halva.png' %}" alt="halva">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="section-wrapper">
+            <div class="footer-bottom-nav">
+                <div class="footer-bottom-group">
+                    <div class="footer-bottom-item">
+                        2014-2021 Все права защищены. Информация сайта защищена законом об авторских правах
+                    </div>
+                </div>
+                <div class="footer-bottom-group">
+                    {% if privacy_page %}
+                        <a href="{{ privacy_page.get_absolute_url }}" target="_blank" class="footer-bottom-item">
+                            {{ privacy_page }}
+                        </a>
+                    {% endif %}
+                    {% if sitemap_page %}
+                        <a href="{{ sitemap_page.get_absolute_url }}" class="footer-bottom-item">
+                            {{ sitemap_page }}
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="footer-bottom-group">
+                    <noindex>
+                    <a href="https://place-start.ru" class="footer-bottom-item">
+                        Сделано в
+                        <svg role="img">
+                            <use href="/static/images/static-sprite.svg#ps"></use>
+                        </svg>
+                    </a>
+                    </noindex>
+                </div>
+            </div>
+            <div class="footer-bottom-info">
+                <div class="footer-bottom-group full">
+                    <div class="footer-bottom-item">Сайт носит информационный характер и не является публичной офертой
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<div class="to_up" data-anchor="body">
+    <svg role="img">
+        <use href="/static/images/sprite.svg#dropdown"></use>
+    </svg>
+</div>
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+<div class="custom-modals">
+    {% block modals %}
+        <div class="custom-modal small" id="oneclick">
+            <div class="custom-modal__wrapper">
+                <div class="custom-modal__header">
+                    <span class="custom-modal-header__title">Купить в 1 клик</span>
+                    <button class="close-modal close-modal-event" type="button">
+                        <svg class="close-modal__svg" role="img">
+                            <use href="/static/images/sprite.svg#close"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="custom-modal__body">
+                    <form name="post-form" class="modal-form ajax-form" method="POST" action="{% url 'feedback:oneclick' %}">
+                        <input type="hidden" name="product" value="{{ product.id }}">
+                        <input type="hidden" class="quantity" name="quantity" value="1">
+                        <label class="input">
+                            <span class="input__name">Телефон</span>
+                            <input type="tel" name="phone" class="input__input" required>
+                        </label>
+                        <label class="input">
+                            <span class="input__name">Имя</span>
+                            <input type="text" name="name" class="input__input" required>
+                        </label>
+                        <button class="btn btn-primary" type="submit">
+                            <span class="btn__text">Заказать</span>
+                        </button>
+                        <p class="personal-data-link">
+                            <span>Нажимая на кнопку, вы соглашаетесь на</span>
+                            <a href="{{ personal_page.get_absolute_url }}" target="_blank">обработку персональных данных.</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="custom-modal small" id="in_stock">
+            <div class="custom-modal__wrapper">
+                <div class="custom-modal__header">
+                    {% comment %}
+                    <span class="custom-modal-header__title">Сообщить о поступлении</span>
+                    {% endcomment %}
+                    <button class="close-modal close-modal-event" type="button">
+                        <svg class="close-modal__svg" role="img">
+                            <use href="/static/images/sprite.svg#close"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="custom-modal__body">
+                    <form class="modal-form ajax-form" method="POST" action="{% url 'feedback:in_stock' %}">
+                        <input type="hidden" name="product" value="{{ product.id }}">
+                        <label class="input">
+                            <span class="input__name">Имя</span>
+                            <input type="text" name="name" class="input__input" required>
+                        </label>
+                        <label class="input">
+                            <span class="input__name">Email</span>
+                            <input type="email" name="email" class="input__input" required>
+                        </label>
+                        <label class="input">
+                            <span class="input__name">Телефон</span>
+                            <input type="tel" name="phone" class="input__input" required>
+                        </label>
+                        <button class="btn btn-primary" type="submit">
+                            <span class="btn__text">Отправить</span>
+                        </button>
+                        <p class="personal-data-link">
+                            <span>Нажимая на кнопку, вы соглашаетесь на</span>
+                            <a href="{{ personal_page.get_absolute_url }}" target="_blank">обработку персональных данных.</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="custom-modal small" id="success">
+            <div class="custom-modal__wrapper">
+                <div class="custom-modal__header">
+                    <span class="custom-modal-header__title">Данные успешно обновлены</span>
+                    <button class="close-modal close-modal-event" type="button">
+                        <svg class="close-modal__svg" role="img">
+                            <use href="/static/images/sprite.svg#close"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="custom-modal__body">
+                </div>
+            </div>
+        </div>
+        <div class="custom-modal small" id="user-login">
+            <div class="custom-modal__wrapper">
+                <div class="custom-modal__header">
+                    <button class="close-modal close-modal-event" type="button">
+                        <svg class="close-modal__svg" role="img">
+                            <use href="/static/images/sprite.svg#close"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="custom-modal__body">
+                    <div class="modal__title">Войти через</div>
+                    <div class="modal-socials">
+
+                        <a href='{% url "social_auth_redirect" %}?action=1&type=vk' class="modal-social">
+                            <svg role="img">
+                                <use href="/static/images/static-sprite.svg#cvk"></use>
+                            </svg>
+                        </a>
+
+                        {% comment %}
+                        <a href='{% url "social_auth_redirect" %}' class="modal-social">
+                            <svg role="img">
+                                <use href="/static/images/static-sprite.svg#cfacebook"></use>
+                            </svg>
+                        </a>
+                        {% endcomment %}
+
+                        <a href="{% url 'social_auth_redirect' %}?action=1&type=yandex" class="modal-social">
+                            <svg role="img">
+                                <use href="/static/images/static-sprite.svg#cyandex"></use>
+                            </svg>
+                        </a>
+
+                    </div>
+                    <div class="modal-divider">
+                        <span class="modal-divider__text">или</span>
+                    </div>
+                    <div class="modal__title">Войти через e-mail</div>
+                    <form class="modal-form ajax-form" method="post" action="{% url 'login' %}">
+                        <label class="input">
+                            <span class="input__name">E-mail</span>
+                            <input type="email" name="email" class="input__input" required>
+                        </label>
+                        <label class="input">
+                            <span class="input__name">Пароль</span>
+                            <input type="password" name="password" class="input__input" required>
+                        </label>
+                        <button class="btn btn-primary" type="submit"><span class="btn__text">Войти</span></button>
+                    </form>
+                    <div class="modal-actions">
+                        <a href="#" data-modal="change-pass">Забыли пароль?</a>
+                        <a href="#" data-modal="user-register">Регистрация по e-mail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="custom-modal small" id="user-register" onsubmit="ym(38885100, 'reachGoal', 'registraciya'); return true;">
+            <div class="custom-modal__wrapper">
+                <div class="custom-modal__header">
+                    <button class="close-modal close-modal-event" type="button">
+                        <svg class="close-modal__svg" role="img">
+                            <use href="/static/images/sprite.svg#close"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="custom-modal__body">
+                    <div class="modal__title">Регистрация через e-mail</div>
+                    <form class="modal-form ajax-form" method="post" action="{% url 'signup' %}">
+                        <label class="input">
+                            <span class="input__name">E-mail</span>
+                            <input type="email" name="email" class="input__input" required>
+                        </label>
+                        <button class="btn btn-primary" type="submit">
+                            <span class="btn__text">Зарегистрироваться</span>
+                        </button>
+                    </form>
+                    {% if public_page %}
+                        <div class="modal-help_text">
+                            Нажимая на кнопку «Зарегистрироваться», вы соглашаетесь с условиями
+                            <a href="{{ public_page.get_absolute_url }}">Публичной оферты</a>
+                            {% if personal_page %}
+                                и принимаете
+                                <a href="{{ personal_page.get_absolute_url }}" target="_blank">согласие на обработку
+                                    данных</a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="custom-modal small" id="change-pass">
+            <div class="custom-modal__wrapper">
+                <div class="custom-modal__header">
+                    <button class="close-modal close-modal-event" type="button">
+                        <svg class="close-modal__svg" role="img">
+                            <use href="/static/images/sprite.svg#close"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="custom-modal__body">
+                    <div class="modal__title">Восстановление пароля</div>
+                    <form class="modal-form ajax-form" method="post" action="{% url 'password_reset' %}">
+                        <label class="input">
+                            <span class="input__name">E-mail</span>
+                            <input type="email" name="email" class="input__input" required>
+                        </label>
+                        <button class="btn btn-primary" type="submit">
+                            <span class="btn__text">Восстановить пароль</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="custom-modal small" id="change_city">
+            <div class="custom-modal__wrapper">
+                <div class="custom-modal__header">
+                    <span class="custom-modal-header__title">Выберите ваш город</span>
+                    <button class="close-modal close-modal-event" type="button">
+                        <svg class="close-modal__svg" role="img">
+                            <use href="/static/images/sprite.svg#close"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="custom-modal__body">
+                    <form class="change-city" method="post" action="{% url 'change_domain' %}">
+                        {% if page %}
+                            <input type="hidden" name="app" value="{{ page|get_name }}">
+                            <input type="hidden" name="model" value="{{ page|get_model }}">
+                            <input type="hidden" name="id" value="{{ page.id }}">
+                        {% elif object %}
+                            <input type="hidden" name="app" value="{{ object|get_name }}">
+                            <input type="hidden" name="model" value="{{ object|get_model }}">
+                            <input type="hidden" name="id" value="{{ object.id }}">
+                        {% endif %}
+                        {% for d in domains %}
+                            <label class="change-city-item {% if forloop.first %}first{% endif %} {% if forloop.last %}last{% endif %} {% if d == domain %}close-modal-event{% endif %}">
+                                <input type="radio" value="{{ d }}" name="domain"
+                                       {% if d == domain %}checked{% endif %}>
+                                <span>{{ d.name }}</span>
+                            </label>
+                        {% endfor %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+</div>
+
+<script>
+    document.querySelector('.order-step-radio_active').addEventListener('click', () =>{
+        document.querySelector('.order-step-radio__pay').classList.add('disable');
+        let payment = document.querySelectorAll('.order-step-radio__wrapper input[name="payment"]');
+
+        payment.forEach((pay)=>{
+            pay.checked = false;
+        })
+
+    })
+
+    document.querySelector('.order-step-radio_not_active').addEventListener('click', () =>{
+         document.querySelector('.order-step-radio__pay').classList.remove('disable');
+    })
+</script>
+
+<!-- Данный скрипт работает для баннера, так же делая задержку -->
+<script>
+	var delayOpenBanner = 0;
+
+	document.addEventListener("DOMContentLoaded", hiddenCloseclick());
+
+	document.getElementById('banner-close').addEventListener("click", hiddenCloseclick);
+	let result;
+	function hiddenCloseclick() {
+		setTimeout(function(){
+			let x = document.getElementById('focus-banner');
+			  if (x.style.display == "block"){
+			  document.cookie = "banner-close=none; max-age=86 400";
+			  x.style.display = "none";
+			  } else {
+			 x.style.display = "block"}
+		}, delayOpenBanner)
+		
+
+	 let y = document.getElementById('banner-close');
+	 if (y.style.display == "block"){
+	    y.style.display = "none";
+	 } else{
+	    y.style.display = "block";
+	 }
+	};
+
+	result =document.cookie.match(/banner-close=(.+?)(;|$)/);
+
+	let banner = document.getElementById('warning-banner');
+	if (result[1] == "none"){
+		banner.style.display = "none";
+	}
+	else{
+		banner.style.display = "block";
+	}
+</script>
+
+{% comment %}
+<script>
+    setTimeout (() =>{
+        let script = document.createElement('script');
+        script.src = 'https://vk.com/js/api/openapi.js?162';
+        script.setAttribute('onload', 'VK.Widgets.Group("vk_groups", {mode: 4, height: "400", width: "230"}, 145784288)');
+        document.querySelector('body').append(script);
+    }, 2000)
+
+</script>
+{% endcomment %}
+
+{% block footer_extra %}
+    <script src="{% static 'js/basePage.bundle.js' %}?v={{ v }}"></script>
+{% endblock footer_extra %}
+{{ domain.footer_extra|safe }}
+
+<script>
+    window.onload = () =>{
+        var elements = document.querySelectorAll("*")
+        var elementsForChecking = []
+        elements.forEach((element) => {
+            if(element.textContent != ""){
+                let styles = window.getComputedStyle(element)
+                if(styles.display == "none"){
+                    elementsForChecking.push(element)
+                }
+            }
+        })
+        console.log("------------------------")
+        console.log(elementsForChecking)
+        console.log("---------------------------")
+    }
+</script>
+
+</body>
+</html>

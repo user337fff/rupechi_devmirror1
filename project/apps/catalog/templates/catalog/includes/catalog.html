@@ -1,0 +1,97 @@
+{% load catalog %}
+<section class="category-categories">
+    <div class="section-wrapper">
+        <div class="category-categories-grid">
+            {% for category in object.get_related_categories|dictsort:"short_title" %}
+                <a href="{{ category.get_absolute_url }}{{ brand_get }}" class="category-categories-item"
+                   {% if category.is_hide %}data-hide="1"{% endif %}>
+                    {{ category.short_title|default:category.title }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<section class="category">
+    <div class="section-wrapper">
+        <noindex>
+            <form class="category-filter">
+                {{ template_filters }}
+            </form>
+        </noindex>
+        <div class="category-catalog">
+            <noindex>
+                <form class="category-catalog-actions">
+                    <div class="category-catalog-actions-sort">
+                        Сортировать по:
+                        <div class="category-catalog-actions-sort-dropdown sort-dropdown">
+                            <div class="category-catalog-actions-sort-dropdown-header">
+                                <span class="category-catalog-actions-sort-dropdown-header__title sort-header" data-sort="">умолчанию</span>
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#dropdown"></use>
+                                </svg>
+                            </div>
+                            <div class="category-catalog-actions-sort-dropdown-body">
+                                <div class="category-catalog-actions-sort-dropdown-item sort-item" data-sort="">умолчанию
+                                </div>
+                                <div class="category-catalog-actions-sort-dropdown-item sort-item" data-sort="price">
+                                    возрастанию цены
+                                </div>
+                                <div class="category-catalog-actions-sort-dropdown-item sort-item" data-sort="-price">
+                                    убыванию цены
+                                </div>
+                                <div class="category-catalog-actions-sort-dropdown-item sort-item" data-sort="title">
+                                    названию (А-Я)
+                                </div>
+                                <div class="category-catalog-actions-sort-dropdown-item sort-item" data-sort="-title">
+                                    названию (Я-А)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category-catalog-actions-paginate">
+                        Показывать по:
+                        <label class="category-catalog-actions-paginate-item orange">
+                            <input type="radio" name="paginate" value="30" checked>
+                            <span>30</span>
+                        </label>
+                        <label class="category-catalog-actions-paginate-item orange">
+                            <input type="radio" name="paginate" value="60">
+                            <span>60</span>
+                        </label>
+                        <label class="category-catalog-actions-paginate-item orange">
+                            <input type="radio" name="paginate" value="90">
+                            <span>90</span>
+                        </label>
+                    </div>
+                    <div class="category-catalog-actions-type">
+                        <label class="category-catalog-actions-type-item orange">
+                            <input type="radio" name="view" value="table" checked>
+                            <span>
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#grid"></use>
+                                </svg>
+                            </span>
+                        </label>
+                        <label class="category-catalog-actions-type-item orange">
+                            <input type="radio" name="view" value="list">
+                            <span>
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#list"></use>
+                                </svg>
+                            </span>
+                        </label>
+                    </div>
+                </form>
+            </noindex>
+            <div itemscope itemtype="http://schema.org/ItemList" class="category-catalog-grid grid table"
+                 data-action="{{ category.get_absolute_url }}">
+                {{ products|safe }}
+            </div>
+            <div class="category-catalog-pagination">
+            </div>
+            <div class="category-catalog-popular">
+                {{ popular_products|safe }}
+            </div>
+        </div>
+    </div>
+</section>

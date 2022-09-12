@@ -1,0 +1,13 @@
+<div class="breadcrumbs" itemtype="http://schema.org/BreadcrumbList" itemscope>
+    <ul>
+        {% for title, link in page_info.breadcrumbs %}
+            <li itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                <a href="{{ link }}" itemprop="item">
+                    <meta itemprop="name" content="{{ title }}"/>
+                    {{ title }}
+                </a>
+                <meta itemprop="position" content="{{ forloop.counter }}">
+            </li>
+        {% endfor %}
+    </ul>
+</div>

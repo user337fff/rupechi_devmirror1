@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+{% load static catalog %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/orderPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block footer_extra %}
+    <script src="{% static 'js/orderPage.bundle.js' %}?v={{ v }}"></script>
+{% endblock %}
+
+{% block page_title %}
+{% if not template %} {{ block.super }} {% endif %}
+{% endblock %}
+
+{% block content %}
+    <section class="order-section">
+        <div class="section-wrapper">
+            {% if template %}
+                {{ template }}
+            {% else %}
+                <form class="order" action="{% url 'shop:order' %}">
+                    <div class="order-step">
+                        <div class="order-step-header">
+                            <span class="order-step-header__counter">1.</span>
+                            <span class="order-step-header__text">Контакные данные получателя</span>
+                        </div>
+                        <div class="order-step-body">
+                            <label class="order-step-line">
+                                <span class="order-step-line__title">{{ form.name.label }}</span>
+                                <input type="text" class="order-step-line__input"
+                                       pattern="^[А-Яа-яЁё\s]+$"
+                                       {% if form.name.field. %}
+                                       
+                                       {% endif %}
+                                       name="{{ form.name.name }}"
+                                       value="{{ form.initial.name }}">
+                            </label>
+                            <label class="order-step-line">
+                                <span class="order-step-line__title">{{ form.phone.label }}</span>
+                                <input type="tel" class="order-step-line__input" name="{{ form.phone.name }}"
+                                       {% if form.phone.field. %}
+                                       
+                                       {% endif %}
+                                       value="{{ form.initial.phone }}">
+                            </label>
+                            <label class="order-step-line">
+                                <span class="order-step-line__title">{{ form.email.label }}</span>
+                                <input type="email" class="order-step-line__input" name="{{ form.email.name }}"
+                                       {% if form.email.field. %}
+                                       
+                                       {% endif %}
+                                       value="{{ form.initial.email }}">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="order-step">
+                        <div class="order-step-header">
+                            <span class="order-step-header__counter">2.</span>
+                            <span class="order-step-header__text">Способ доставки</span>
+                        </div>
+                        <div class="order-step-body">
+                            {% for item in form.delivery.field.queryset %}
+                                <div class="order-step-radio">
+                                    <label class="order-step-radio__wrapper {%if item.selection%}order-step-radio_active{% else %}order-step-radio_not_active{%endif%}">
+                                        <input type="radio" name="{{ form.delivery.name }}" value="{{ item.id }}" {% if forloop.first %}checked="checked"{% endif %}>
+                                        <span>
+                                    <span class="order-step-radio__marker"></span>
+                                </span>
+                                        <span class="order-step-radio-info">
+                                    <span class="order-step-radio__title">{{ item.title }}</span>
+                                    <span class="order-step-radio__subtitle" {%if item.selection%}style="background-color: #ffdbae; border-radius: 4px; padding: 5px; color: #000000"{%endif%}>
+                                    {{ item.subtitle }}
+                                    </span>
+                                </span>
+                                    </label>
+                                    <div class="order-step-radio-body">
+                                        {% with item.stores.get_current.all as stores %}
+                                            {% if stores %}
+                                                <div class="my-select">
+                                                    <div class="my-select-header">
+                                                        <input type="hidden" name="{{ form.store.name }}"
+                                                               class="my-select-header__selected">
+                                                        <span class="my-select-header__option"></span>
+                                                        <svg role="img" class="my-select-header__svg">
+                                                            <use href="/static/images/sprite.svg#dropdown"></use>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="my-select-dropdown">
+                                                        <div class="my-select-dropdown__wrap" data-simplebar>
+                                                            {% for store in stores %}
+                                                                <a href="#"
+                                                                   class="my-select-dropdown__option"
+                                                                   data-select="{{ store.id }}">{{ store.title }}</a>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                                <label>
+                                                    <input type="text" name="{{ form.address.name }}"
+                                                           {% if forloop.first %}  {% endif %}
+                                                           placeholder="Укажите точный адрес доставки">
+                                                </label>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <label class="order-step-body-comment">
+                                <span class="order-step-body-comment__text">{{ form.comment.label }}</span>
+                                <textarea name="{{ form.comment.name }}"></textarea>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="order-step">
+                        <div class="order-step-header">
+                            <span class="order-step-header__counter">3.</span>
+                            <span class="order-step-header__text">Способ оплаты</span>
+                        </div>
+                        <div class="order-step-body">
+                            {% for item in form.payment.field.queryset %}
+                                <div class="order-step-radio center {%if item.title == 'Наличными или по карте при получении заказа.'%}order-step-radio__pay{%endif%}">
+                                    <label class="order-step-radio__wrapper">
+                                        <input type="radio" name="payment" value="{{ item.id }}" {% if forloop.first %}checked="checked"{% endif %}>
+                                        <span>
+                                    <span class="order-step-radio__marker"></span>
+                                </span>
+                                        <span class="order-step-radio-info">
+                                    <span class="order-step-radio__title">{{ item.title }}</span>
+                                </span>
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="order-step">
+                        <div class="order-step-header">
+                            <span class="order-step-header__text">Состав заказа</span>
+                        </div>
+                        <div class="order-step-body">
+                            <div class="order-cart">
+                                {% for item in cart.items %}
+                                    <a href="{{ item.product.parent.get_absolute_url|default:item.product.get_absolute_url }}"
+                                       class="order-cart-item" data-title="{{ item.product.title }}" data-id="{{ item.product.id }}"
+                                       data-price="{{ item.product.get_storage_info.price }}" data-brand="{{ item.product.brand }}"
+                                       data-category="{{ item.product.category }}" data-quantity="{{ item.quantity }}"
+                                    >
+                                        {% if item.product.parent.image or item.product.image %}
+                                            <div class="order-cart-item-image">
+                                                {% if item.product.parent.image %}
+                                                    {{ item.product.parent.get_template_picture }}
+                                                {% elif item.product.image %}
+                                                    {{ item.product.get_template_picture }}
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                        <div class="order-cart-item__title">{{ item.product.title }}</div>
+                                        <div class="order-cart-item__quantity">{{ item.quantity }} шт.</div>
+                                        <div class="order-cart-item__total">{{ item.total|convert_price }}</div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                            <div class="order-total">
+                                <div class="order-total__wrapper">
+                                    <div class="order-total-info">
+                                        <div class="order-total-info__text">Всего к оплате:</div>
+                                        <div class="order-total-info__total">{{ cart.total|convert_price }}</div>
+                                    </div>
+                                    {% if personal_page %}
+                                        <div class="order-total-info__message">
+                                            Нажимая на кнопку «Подтвердить заказ», я даю
+                                            <a href="{{ personal_page.get_absolute_url }}"  target="_blank">
+                                                согласие на обработку персональных данных</a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <button class="btn btn-primary" type="submit">
+                                    <span class="btn__text">Подтвердить заказ</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

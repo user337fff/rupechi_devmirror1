@@ -1,0 +1,113 @@
+{% load catalog %}
+{% with product.get_storage_info as storage %}
+<div  class="product-card-wide seo-product" data-product="{{ product.id }}"
+     data-title="{{ product.title }}" data-price="{{ storage.price }}" data-id="{{ product.id }}"
+     {% if product.brand %} data-brand="{{ product.brand.title }}" {% endif %}
+     data-category="{{ product.category }}"
+    >
+        {% include 'catalog/includes/seo_product.html' %}
+        <div class="product-card-wide-info__wrapper">
+            <div class="product-card-wide-image {% if not product.image %}empty{% endif %}">
+                {% if product.image %}
+                    {{ product.get_template_picture_large }}
+                {% else %}
+                    <svg role="img">
+                        <use href="/static/images/sprite.svg#cart"></use>
+                    </svg>
+                {% endif %}
+            </div>
+            <div class="product-card-wide-attrs">
+                <div class="product-card-wide-attrs__actions">
+                    <svg role="img" class="favorite">
+                        <use href="/static/images/sprite.svg#favorite"></use>
+                    </svg>
+                    <svg role="img" class="compare">
+                        <use href="/static/images/sprite.svg#compare"></use>
+                    </svg>
+                </div>
+                <div class="product-card-wide-attrs__wrapper">
+                    <a itemprop="url" href="{{ product.get_absolute_url }}" class="full_url"></a>
+                    {% for attr in product.get_preview_attrs %}
+                        <div class="product-card-wide-attr">
+                            <div class="product-card-wide-attr__group">{{ attr.attribute }}:</div>
+                            <div class="product-card-wide-attr__value">{{ attr.value }}</div>
+                        </div>
+                    {% endfor %}
+                    <div class="product-card-wide-attr">
+                        <div class="product-card-wide-attr__group">Количество:</div>
+                        <div class="product-card-wide-attr__value">
+                            {% if storage.quantity %}
+                                {% if storage.quantity > 3 %}
+                                    Много
+                                {% else %}
+                                    Мало
+                                {% endif %}
+                            {% else %}
+                                Под заказ
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div  class="product-card-wide-info">
+                <div class="product-card-wide-info__title">
+                    {{ product }}
+                </div>
+                <div class="product-card-wide-info-stars">
+                    {% with product.get_rating as rating %}
+                        <div class="product-card-wide-info-stars__icons">
+                            {% for x in 'xxxxx' %}
+                                <svg role="img" {% if forloop.counter <= rating.rating %} class="active" {% endif %}>
+                                    <use href="/static/images/sprite.svg#star"></use>
+                                </svg>
+                            {% endfor %}
+                        </div>
+                        <div class="product-card-wide-info-stars__count">{{ rating.count }}</div>
+                    {% endwith %}
+                </div>
+                <div  class="product-card-wide-info-prices">
+                    {% if storage.old_price %}
+                        <div itemprop="price" class="product-card-wide-info-price">{% if storage.variations %}от {% endif %}{{ storage.old_price|convert_price }}</div>
+                        <div class="product-card-wide-info-old_price">{{ storage.price|convert_price }}</div>
+                    {% else %}
+                        {% if storage.discount_price %}
+                            <div class="product-card-wide-info-old_price">{{ storage.price|convert_price }}</div>
+                        {% endif %}
+                        {% if storage.price %}
+                               <div itemprop="price" class="product-card-wide-info-price">{% if storage.variations %}от {% endif %}{{ storage.discount_price|default:storage.price|convert_price }}</div>
+                        {% else %}
+                            <div class="product-card__no_price">Цена по запросу</div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="product-card-wide-bottom {% if not storage.quantity %}hide{% endif %}">
+                    <svg role="img">
+                        <use href="/static/images/sprite.svg#success"></use>
+                    </svg>
+                        Товар на складе в г. {{ request.domain.name }}
+                </div>
+            </div>
+        </div>
+        <div class="product-card-wide-buy">
+            <form action="{% url 'cart:cart_add' %}" class="product-card-wide-form js-add-cart">
+                <input type="hidden" name="product" value="{{ product.id }}">
+                {% if storage.id %}
+                    <input type="hidden" name="option" value="{{ storage.id }}">
+                {% endif %}
+                <label class="input-counter">
+                    <input type="number" name="quantity" class="input-counter-input"
+                           data-submit
+                           data-min="1" data-max="{{ cart.MAX }}" value="1" data-step="1">
+                </label>
+                <button class="btn btn-primary" type="submit">
+                    <span class="btn__text">В корзину</span>
+                </button>
+            </form>
+            <a href="#" class="product-card-wide-one-click card_wide--buttonBuyForClick" data-modal="oneclick">
+                <span class="product-card-wide-one-click__wrapper">
+                    <span class="product-card-wide-one-click__text">Купить в один клик</span>
+                </span>
+            </a>
+        </div>
+</div>
+{% endwith %}

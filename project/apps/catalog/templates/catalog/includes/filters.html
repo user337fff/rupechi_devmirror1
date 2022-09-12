@@ -1,0 +1,314 @@
+{% load catalog cache %}
+{% if not filters.empty %}
+    <form class="category-filter class-test-test">
+        <div class="category-filter-header"
+             data-open-target=".category-filter" data-no-scroll="body">
+            <svg role="img">
+                <use href="/static/images/sprite.svg#settings"></use>
+            </svg>
+            Подбор по параметрам
+        </div>
+        <div class="category-filter-body">
+            <div class="category-filter-back" data-open-target=".category-filter" data-no-scroll="body">
+                <svg role="img">
+                    <use href="/static/images/sprite.svg#dropdown"></use>
+                </svg>
+                Назад
+                <span></span>
+            </div>
+            {% if filters.stock %}
+                <div class="category-filter-group active">
+                    <div class="category-filter-group-header">
+                        Наличие
+                        <svg role="img">
+                            <use href="/static/images/sprite.svg#dropdown"></use>
+                        </svg>
+                    </div>
+                    <div class="category-filter-group-body" style="display: none;">
+                        <label class="category-filter-group-item">
+                            <input type="checkbox" name="stock" value="on">
+                            <span>
+                            <span class="category-filter-group-item-marker">
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#success"></use>
+                                </svg>
+                            </span>
+                            <span class="category-filter-group-item__title">В наличии</span>
+                        </span>
+                        </label>
+                    </div>
+                </div>
+            {% endif %}
+            {% for attr in filters.attrs|slice:":6" %}
+                {% if attr %}
+                    <div class="category-filter-group {% if attr.active %}active{% endif %}">
+                        <div class="category-filter-group-header">
+                            {{ attr.title }}
+                            <svg role="img">
+                                <use href="/static/images/sprite.svg#dropdown"></use>
+                            </svg>
+                        </div>
+                        <div class="category-filter-group-body {% if attr.type == 'number' %}range{% endif %}"
+                             style="display: none;">
+                            {% if attr.type == 'number' %}
+                                <div class="range-input">
+                                    <div class="input-counter">
+                                        {% if attr.slug == 'price' %}
+                                            <input type="number" class="input-counter-input"
+                                            data-min="{{ attr.min }}"
+                                            data-max="{{ attr.max }}"
+                                            data-not-actions="1"
+                                            data-submit="false"
+                                            data-round="2"
+                                            data-empty
+                                            data-attrname="{{attr.name}}"
+                                            value="{{ filters_actived.price.min }}"
+                                            placeholder="{{ attr.min }}"
+                                            name="price_min">
+                                        {% else %}
+                                            <input type="number" class="input-counter-input"
+                                                data-min="{{ attr.min }}"
+                                                data-max="{{ attr.max }}"
+                                                data-not-actions="1"
+                                                data-submit="false"
+                                                data-round="2"
+                                                data-empty
+                                                data-attrname="{{attr.name}}"
+                                                value="{{ filters_actived.num_attributes|get:attr.name|get_minmax:'min'|default:'' }}"
+                                                placeholder="{{ attr.min }}"
+                                                    {% if attr.slug == 'price' %}
+                                                name="price_min"
+                                                    {% else %}
+                                                name="{{ attr.name }}_min"
+                                                    {% endif %}>
+                                        {% endif %}
+                                    </div>
+                                    <div class="range-input-divider"></div>
+                                    <div class="input-counter">
+                                        {% if attr.slug == 'price' %}
+                                            <input type="number" class="input-counter-input"
+                                                data-min="{{ attr.min }}"
+                                                data-max="{{ attr.max }}"
+                                                data-not-actions="1"
+                                                data-submit="false"
+                                                data-round="2"
+                                                data-empty
+                                                data-attrname="{{attr.name}}"
+                                                value="{{ filters_actived.price.max }}"
+                                                placeholder="{{ attr.max }}"
+                                                name="price_max">
+                                        {% else %}
+                                        <input type="number" class="input-counter-input"
+                                            data-min="{{ attr.min }}"
+                                            data-max="{{ attr.max }}"
+                                            data-not-actions="1"
+                                            data-submit="false"
+                                            data-round="2"
+                                            data-empty
+                                            data-attrname="{{attr.name}}"
+                                            value="{{ filters_actived.num_attributes|get:attr.name|get_minmax:'max'|default:'' }}"
+                                            placeholder="{{ attr.max }}"
+                                            {% if attr.slug == 'price' %}
+                                                name="price_max"
+                                            {% else %}
+                                                name="{{ attr.name }}_max"
+                                            {% endif %}>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% else %}
+                                {% for id, title, uid in attr.values %}
+
+                                    {% if id == "inStock" %}
+
+                                        <label class="category-filter-group-item">
+                                            <input data-fewfwee="itsStock"  type="checkbox" name="{{ attr.name }}" value="{{ id }}"
+                                                    {% if "stock_inStock" in filters_actived.dict %} checked {% endif %}>
+                                            <span>
+                                                <span class="category-filter-group-item-marker">
+                                                    <svg role="img">
+                                                        <use href="/static/images/sprite.svg#success"></use>
+                                                    </svg>
+                                                </span>
+                                                <span class="category-filter-group-item__title">{{ title }}</span>
+                                            </span>
+                                        </label>
+
+                                    {% elif id == "akcii" %}
+
+                                        <label class="category-filter-group-item">
+                                            <input data-fewfwee="itsAkcii"  type="checkbox" name="{{ attr.name }}" value="{{ id }}"
+                                                    {% if "stock_akcii" in filters_actived.dict %} checked {% endif %}>
+                                            <span>
+                                                <span class="category-filter-group-item-marker">
+                                                    <svg role="img">
+                                                        <use href="/static/images/sprite.svg#success"></use>
+                                                    </svg>
+                                                </span>
+                                                <span class="category-filter-group-item__title">{{ title }}</span>
+                                            </span>
+                                        </label>
+
+                                    {% else %}
+                                        <label class="category-filter-group-item">
+                                            <input type="checkbox" name="{{ attr.name }}" value="{{ id }}"
+                                                    {% if uid in filters_actived.dict %} checked {% endif %}>
+                                            <span>
+                                                <span class="category-filter-group-item-marker">
+                                                    <svg role="img">
+                                                        <use href="/static/images/sprite.svg#success"></use>
+                                                    </svg>
+                                                </span>
+                                                <span class="category-filter-group-item__title">{{ title }}</span>
+                                            </span>
+                                        </label>
+                                    {% endif %}
+
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% for attr in filters.attrs|slice:"6:" %}
+                {% if attr %}
+                    <div class="category-filter-group {% if attr.active %}active{% endif %} hidden-filters" data-hide="1">
+                        <div class="category-filter-group-header">
+                            {{ attr.title }}
+                            <svg role="img">
+                                <use href="/static/images/sprite.svg#dropdown"></use>
+                            </svg>
+                        </div>
+                        <div class="category-filter-group-body {% if attr.type == 'number' %}range{% endif %}"
+                             style="display: none;">
+                            {% if attr.type == 'number' %}
+                                <div class="range-input">
+                                    <div class="input-counter">
+                                        {% if attr.slug == 'price' %}
+                                            <input type="number" class="input-counter-input"
+                                                data-min="{{ attr.min }}"
+                                                data-max="{{ attr.max }}"
+                                                data-not-actions="1"
+                                                data-submit="false"
+                                                data-round="2"
+                                                data-empty
+                                                data-attrname="{{attr.name}}"
+                                                value="{{ filters_actived.price.min }}"
+                                                placeholder="{{ attr.min }}"
+                                                name="price_min">
+                                        {% else %}
+                                            <input type="number" class="input-counter-input"
+                                                data-min="{{ attr.min }}"
+                                                data-max="{{ attr.max }}"
+                                                data-not-actions="1"
+                                                data-submit="false"
+                                                data-round="2"
+                                                data-empty
+
+                                                data-attrname="{{attr.name}}"
+
+                                                value="{{ filters_actived.num_attributes|get:attr.name|get_minmax:'min'|default:'' }}"
+                                                placeholder="{{ attr.min }}"
+                                                    {% if attr.slug == 'price' %}
+                                                name="price_min"
+                                                    {% else %}
+                                                name="{{ attr.name }}_min"
+                                                    {% endif %}>
+                                        {% endif %}
+                                    </div>
+                                    <div class="range-input-divider"></div>
+                                    <div class="input-counter">
+                                        {% if attr.slug == 'price' %}
+                                            <input type="number" class="input-counter-input"
+                                                data-min="{{ attr.min }}"
+                                                data-max="{{ attr.max }}"
+                                                data-not-actions="1"
+                                                data-submit="false"
+                                                data-round="2"
+                                                data-empty
+                                                data-attrname="{{attr.name}}"
+                                                value="{{ filters_actived.price.max }}"
+                                                placeholder="{{ attr.min }}"
+                                                name="price_max">
+                                        {% else %}
+                                            <input type="number" class="input-counter-input"
+                                               data-min="{{ attr.min }}"
+                                               data-max="{{ attr.max }}"
+                                               data-not-actions="1"
+                                               data-submit="false"
+                                               data-round="2"
+                                               data-empty
+                                               data-attrname="{{attr.name}}"
+                                               value="{{ filters_actived.num_attributes|get:attr.name|get_minmax:'max'|default:'' }}"
+                                               placeholder="{{ attr.max }}"
+                                                {% if attr.slug == 'price' %}
+                                               name="price_max"
+                                                {% else %}
+                                               name="{{ attr.name }}_max"
+                                                {% endif %}>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% else %}
+                                {% for id, title, uid in attr.values %}
+
+                                    {% if id == "inStock" %}
+
+                                        <label class="category-filter-group-item">
+                                            <input data-fewfwee="itsStock"  type="checkbox" name="{{ attr.name }}" value="{{ id }}"
+                                                    {% if "stock_inStock" in filters_actived.dict %} checked {% endif %}>
+                                            <span>
+                                                <span class="category-filter-group-item-marker">
+                                                    <svg role="img">
+                                                        <use href="/static/images/sprite.svg#success"></use>
+                                                    </svg>
+                                                </span>
+                                                <span class="category-filter-group-item__title">{{ title }}</span>
+                                            </span>
+                                        </label>
+
+                                    {% elif id == "akcii" %}
+
+                                        <label class="category-filter-group-item">
+                                            <input data-fewfwee="itsAkcii"  type="checkbox" name="{{ attr.name }}" value="{{ id }}"
+                                                    {% if "stock_akcii" in filters_actived.dict %} checked {% endif %}>
+                                            <span>
+                                                <span class="category-filter-group-item-marker">
+                                                    <svg role="img">
+                                                        <use href="/static/images/sprite.svg#success"></use>
+                                                    </svg>
+                                                </span>
+                                                <span class="category-filter-group-item__title">{{ title }}</span>
+                                            </span>
+                                        </label>
+
+                                    {% else %}
+                                        <label class="category-filter-group-item">
+                                            <input type="checkbox" name="{{ attr.name }}" value="{{ id }}"
+                                                    {% if uid in filters_actived.dict %} checked {% endif %}>
+                                            <span>
+                                                <span class="category-filter-group-item-marker">
+                                                    <svg role="img">
+                                                        <use href="/static/images/sprite.svg#success"></use>
+                                                    </svg>
+                                                </span>
+                                                <span class="category-filter-group-item__title">{{ title }}</span>
+                                            </span>
+                                        </label>
+                                    {% endif %}
+                                    
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <div class="category-filter-buttons">
+                <input type="reset" value="Сбросить все"></input>
+                <span class="btn btn-primary" data-open-target=".category-filter">
+                    <span class="btn__text">Применить</span>
+                </span>
+            </div>
+        </div>
+    </form>
+{% endif %}

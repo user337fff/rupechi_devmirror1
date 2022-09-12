@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static catalog %}
+
+{% block content %}
+    <section class="content-page-section">
+        <div class="section-wrapper">
+            <div class="content">
+                <div class="content-page">
+                    {% block inside_content %}
+                        {% comment %}Если что контент данного блока можно включить используя {{ block.super }} у родителя{% endcomment %}
+                        {% for block in page.get_content_list %}
+                            {{ block.render|safe }}
+                        {% endfor %}
+                    {% endblock %}
+                </div>
+                {% if not full_width and page.has_sidebar and page.get_pages %}
+                    <div class="content-sidebar">
+                        <div class="content-sidebar-navigation">
+                            {% for sub_page in page.get_pages %}
+                                <a href="{{ sub_page.get_absolute_url }}"
+                                   class="content-sidebar-link {% if sub_page.page == page %}active{% endif %}">
+                                {{ sub_page }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+
+{% block header_extra %}
+    <link rel="preload" href="{% static 'css/textPage.css' %}?v={{ v }}">
+    <link rel="stylesheet" href="{% static 'css/textPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block footer_extra %}
+    <script src="{% static 'js/textPage.bundle.js' %}?v={{ v }}"></script>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% for product in products %}
+    {% if is_table %}
+        {% include "catalog/product_card.html" with position=forloop.counter %}
+    {% else %}
+        {% include 'catalog/product_card_wide.html' with position=forloop.counter %}
+    {% endif %}
+{% endfor %}

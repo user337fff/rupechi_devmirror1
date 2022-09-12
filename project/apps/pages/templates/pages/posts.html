@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="actions-section">
+    <div class="section-wrapper">
+        <div class="page-actions">
+            {% for action in object.children.iterator %}
+            <a class="page-actions-item" href="{{ action.get_absolute_url }}">
+                <img src="{{ action.get_image.url }}" alt="{{ action.title }}" class="page-action-item__img">
+                <span class="page-actions-item__subtitle">{{ action.subtitle }}</span>
+                <span class="page-actions-item__title">{{ action.title }}</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,3 @@
+{% for category in catalog_items|slice:':10' %}
+    <a href="{{ category.get_absolute_url }}" class="footer-center-item">{{ category }}</a>
+{% endfor %}

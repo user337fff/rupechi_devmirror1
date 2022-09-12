@@ -1,0 +1,31 @@
+<section class="product-slider-section">
+    <div class="section-wrapper">
+    <div class="product-slider" data-slides-to-show="{{ slidesToShow }}">
+        <div class="product-slider-header">
+            <div class="product-slider__title">{{ title }}</div>
+            {% if btn %}
+                <a class="product-slider__btn" href="{{ btn.href|default:'' }}">{{ btn.text }}</a>
+            {% endif %}
+        </div>
+        <div class="product-slider-slider">
+            <div class="product-slider-arrows">
+                <div class="product-slider-arrow left">
+                    <svg role="img">
+                        <use href="/static/images/sprite.svg#dropdown"></use>
+                    </svg>
+                </div>
+                <div class="product-slider-arrow right">
+                    <svg role="img">
+                        <use href="/static/images/sprite.svg#dropdown"></use>
+                    </svg>
+                </div>
+            </div>
+            <div class="product-slider__wrapper">
+                {% for product in products %}
+                    {% include 'catalog/product_card.html' with product=product %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    </div>
+</section>

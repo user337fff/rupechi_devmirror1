@@ -1,0 +1,12 @@
+<a href="{{ item.get_absolute_url }}" class="offers-item">
+    {% if item.image %}
+        <div class="offers-item-image">
+            {{ item.get_template_picture_large }}
+        </div>
+    {% endif %}
+    <div class="offers-item-info">
+        <div class="offers-item-info-date">{{ item.pub_date|date:'d.m.Y' }}</div>
+        <div class="offers-item-info-title">{{ item }}</div>
+        <div class="offers-item-info-description">{{ item.description|safe }}</div>
+    </div>
+</a>

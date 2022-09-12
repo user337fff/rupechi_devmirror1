@@ -1,0 +1,55 @@
+<div class="product-buy">
+    <div class="product-buy-nav">
+        <a href="#" data-modal="give-discount" class="product-buy-nav-item" target="_blank">
+            <svg role="img">
+                <use href="/static/images/static-sprite.svg#coin"></use>
+            </svg>
+            Снизим цену
+        </a>
+        {% if mounting_page %}
+        <a href="{{ mounting_page.get_absolute_url }}" class="product-buy-nav-item" target="_blank">
+            <svg role="img">
+                <use href="/static/images/sprite.svg#wrench"></use>
+            </svg>
+            Монтаж
+        </a>
+        {% endif %}
+         <a href="{{ returns_page.get_absolute_url }}" class="product-buy-nav-item" target="_blank">
+            <svg role="img">
+                <use href="/static/images/static-sprite.svg#return"></use>
+            </svg>
+            Возврат
+        </a>
+    </div>
+    {% comment %}
+    <div class="product-buy-socials">
+        <div class="product-buy-socials__title">Отправить ссылку на товар</div>
+        <div class="product-buy-socials-table ya-share2"
+             data-services="vkontakte,viber,whatsapp,odnoklassniki,telegram"
+             data-limit="0">
+        </div>
+    </div>
+    <div class="product-buy-qa">
+        <div class="product-buy-qa__question">Нашли дешевле?</div>
+        <div class="product-buy-qa__answer" data-modal="give-discount">Снизим цену</div>
+    </div>
+    {% endcomment %}
+    {% if actions %}
+        <div class="product-buy-actions">
+            <a href="#" class="product-buy-action favorite">
+                <svg role="img">
+                    <use href="/static/images/sprite.svg#favorite"></use>
+                </svg>
+                В Избранное
+            </a>
+            <a href="#" class="product-buy-action compare">
+                <svg role="img">
+                    <use href="/static/images/sprite.svg#compare"></use>
+                </svg>
+                Сравнить
+            </a>
+        </div>
+    {% endif %}
+
+
+</div>

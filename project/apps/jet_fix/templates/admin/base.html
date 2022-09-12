@@ -1,0 +1,21 @@
+{% extends 'admin/base.html' %}
+{% load i18n static jet_tags %}
+
+{% block extrahead %}
+    {{ block.super }}
+    {% if settings.favicon %}
+        <link rel="icon" href="{{ settings.favicon.url }}" type="image/x-icon">
+    {% endif %}
+
+{% endblock %}
+
+{% block blockbots %}
+    {{ block.super }}
+    <!-- FIXING SELECT 2 JQUERY ISSUE-->
+    <script src="{% static 'admin/js/vendor/jquery/jquery.js' as url %}{{ url|jet_append_version }}"
+            type="text/javascript"></script>
+    <script src="{% static 'admin/js/jquery.init.js' as url %}{{ url|jet_append_version }}"></script>
+    <!-- Fixing prepopulate slug  -->
+    <script src="{% static 'admin/js/prepopulate.min.js' as url %}{{ url|jet_append_version }}"
+            type="text/javascript"></script>
+{% endblock %}

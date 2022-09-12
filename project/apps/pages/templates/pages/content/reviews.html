@@ -1,0 +1,9 @@
+{% for item in object.block.reviews_items.all %}
+    <p>{{ item.name }}</p>
+    {% if item.avatar %}
+        <img src="{{ item.avatar.url }}">
+    {% else %}
+        <img src="no_photo.png">
+    {% endif %}
+    <p>{{ item.text }}</p>
+{% endfor %}

@@ -1,0 +1,41 @@
+<fieldset class="module aligned {{ fieldset.classes }}">
+    {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
+    {% if fieldset.description %}
+        <div class="description">{{ fieldset.description|safe }}</div>
+    {% endif %}
+    {% for line in fieldset %}
+        <div class="form-row{% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
+            {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
+            {% for field in line %}
+                <div{% if not line.fields|length_is:'1' %} class="fieldBox{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}{% if field.field.is_hidden %} hidden{% endif %}"{% elif field.is_checkbox %} class="checkbox-row"{% endif %}>
+                    {% if not line.fields|length_is:'1' and not field.is_readonly %}{{ field.errors }}{% endif %}
+                    {% if field.is_checkbox %}
+                        {{ field.field }}{{ field.label_tag }}
+                    {% else %}
+                        {{ field.label_tag }}
+                        {% if field.is_readonly %}
+                            <div class="readonly">{{ field.contents }}</div>
+                        {% else %}
+                            {{ field.field }}
+                        {% endif %}
+                    {% endif %}
+                    {% if field.field.help_text %}
+                        <div class="help">{{ field.field.help_text|safe }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+     <div class="form-row">
+        <div class="readonly">
+            <label for="id_success">Ссылка для успешной оплаты (Success url):</label>    
+            <input type="text" style="background-color: #ebf2f6;" name="success" value="{{ request.scheme }}://{{ request.get_host }}{% url 'komtet:success' %}" class="vTextField" maxlength="31" id="id_success" disabled="disabled">
+        </div>
+    </div>
+    <div class="form-row">
+        <div>
+            <label for="id_failure">Ссылка для оплаты с ошибкой (Failure url):</label>    
+            <input type="text" style="background-color: #ebf2f6;" name="failure" value="{{ request.scheme }}://{{ request.get_host }}{% url 'komtet:failure' %}" class="vTextField" maxlength="31" id="id_failure" disabled="disabled">
+        </div>
+    </div>
+</fieldset>

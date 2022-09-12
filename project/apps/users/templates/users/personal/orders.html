@@ -1,0 +1,42 @@
+{% extends "users/personal/base.html" %}
+
+{% load static catalog %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/lkOrderPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block personal_content %}
+    <h3 class="lk-content__title">Мои заказы</h3>
+    <div class="lk-order">
+        <div class="lk-order-line title">
+            <div class="lk-order-cell date">Дата</div>
+            <div class="lk-order-cell id">№ заказа</div>
+            <div class="lk-order-cell title">Наименование</div>
+            <div class="lk-order-cell total">Сумма</div>
+            <div class="lk-order-cell status">Статус</div>
+            <div class="lk-order-cell actions">Действия</div>
+        </div>
+        <div class="lk-order-line">
+            {% for order in request.user.orders.iterator %}
+                <div class="lk-order-cell date">{{ order.created_at }}</div>
+                <div class="lk-order-cell id">{{ order.id }}</div>
+                <div class="lk-order-cell title">
+                    {% for item in order.items.iterator %}
+                        <a href="{{ item.product.get_absolute_url }}" target="_blank">{{ item.get_title }} <span class="counter">{{ item.quantity }} шт.</span></a>
+                    {% endfor %}
+                </div>
+                <div class="lk-order-cell total">{{ order.total|convert_price }}</div>
+                <div class="lk-order-cell status">{{ order.get_status_display }}</div>
+                <div class="lk-order-cell actions">
+                    <a class="ajax-repeat-order" ajax_link="{% url 'cart:cart_repeat' order.id %}">Повторить заказ</a>
+                    {% if order.get_status_display == 'Ожидает оплаты' and not request.user.contractor %}
+                        {% if not request.user.contractor or request.user.contractor < 0 %}
+                            <a href="{{ order.bank_data.bank_url }}" target="_blank">Оплатить заказ</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock personal_content %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/lkPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block content %}
+    <section class="lk-section">
+        <div class="section-wrapper">
+            <div class="lk">
+                <div class="lk-sidebar content-sidebar">
+                    <div class="content-sidebar-navigation">
+                        {% for sub_page in page.get_subpages.iterator %}
+                            <a href="{{ sub_page.get_absolute_url }}"
+                               class="content-sidebar-link {% if sub_page == page %}active{% endif %}">
+                                {{ sub_page }}
+                            </a>
+                        {% endfor %}
+                        <a href="{% url 'logout' %}"
+                           class="content-sidebar-link">
+                            Выйти
+                        </a>
+                    </div>
+                </div>
+                <div class="lk-content">
+                    {% block personal_content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

@@ -1,0 +1,1 @@
+{{ mail }}  в г {{ request.POST.city }}

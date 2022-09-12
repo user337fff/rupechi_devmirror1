@@ -1,0 +1,27 @@
+{% load catalog %}
+<div class="section-wrapper">
+    <div class="calc-lines">
+        <div class="calc-lines-line title">
+            <div class="calc-lines-cell">Производитель</div>
+            <div class="calc-lines-cell">Утеплитель мм</div>
+            <div class="calc-lines-cell">Срок гарантии</div>
+            <div class="calc-lines-cell">Цена, руб.</div>
+            <div class="calc-lines-cell">Показать</div>
+        </div>
+        {% for line in lines %}
+            <div class="calc-lines-line">
+                <div class="calc-lines-cell">{{ line.brand }}</div>
+                <div class="calc-lines-cell">{% if line.insulation %}есть{% endif %}</div>
+                <div class="calc-lines-cell">{{ line.life_tile }}</div>
+                {% with line|get_calc_price:height  as info %}
+                    <div class="calc-lines-cell">{{ info.price|convert_price }}</div>
+                    <div class="calc-lines-cell">
+                        <div class="btn btn-primary" data-line="{{ line.id }}">
+                            <span class="btn__text">Показать</span>
+                        </div>
+                    </div>
+                {% endwith %}
+            </div>
+        {% endfor %}
+    </div>
+</div>

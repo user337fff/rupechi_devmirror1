@@ -1,0 +1,99 @@
+<div class="compare-body">
+    <noindex>
+        <div class="compare-left">
+            <label>
+                <input type="checkbox" name="diff">
+                <span>
+                    <span class="marker">
+                        <span class="mark">
+                        <svg role="img">
+                            <use href="/static/images/sprite.svg#success"></use>
+                        </svg>
+                    </span>
+                    </span>
+                    <span class="text">Показывать только различия</span>
+                </span>
+            </label>
+            <div class="btn btn-outline btn-clear">
+                <div class="btn__text">Очистить список товаров</div>
+            </div>
+        </div>
+    </noindex>
+    <div class="compare-slider__wrapper">
+        <div class="compare-slider">
+            <div class="compare-slider-slick__wrapper">
+                <div class="compare-slider-slick-arrows">
+                    <div class="compare-slider-slick-arrow left">
+                        <svg role="img">
+                            <use href="/static/images/sprite.svg#dropdown"></use>
+                        </svg>
+                    </div>
+                    <div class="compare-slider-slick-arrow right">
+                        <svg role="img">
+                            <use href="/static/images/sprite.svg#dropdown"></use>
+                        </svg>
+                    </div>
+                </div>
+                <div class="compare-slider-slick fix_slider">
+                    {{ items|safe }}
+                </div>
+            </div>
+        </div>
+        <div class="compare-slider mobile">
+            <div class="compare-slider-slick__wrapper">
+                <div class="compare-slider-slick-arrows">
+                    <div class="compare-slider-slick-arrow left">
+                        <svg role="img">
+                            <use href="/static/images/sprite.svg#dropdown"></use>
+                        </svg>
+                    </div>
+                    <div class="compare-slider-slick-arrow right">
+                        <svg role="img">
+                            <use href="/static/images/sprite.svg#dropdown"></use>
+                        </svg>
+                    </div>
+                </div>
+                <div class="compare-slider-slick fix_slider">
+                    {{ items|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="compare-attrs-section">
+    <div class="compare-attrs__title">Характеристики</div>
+    <div class="compare-attrs__wrapper">
+        <div class="compare-attrs">
+            {% for group, values in attrs.items %}
+                <div class="compare-attrs-line">
+                    <div class="compare-attrs-line__title">
+                        <span class="compare-attrs-line__value">{{ group }}</span>
+                    </div>
+                    <div class="compare-attrs-line-slider fix_slider">
+                        {% for value in values %}
+                            <div class="compare-attrs-line-item">
+                                <span class="compare-attrs-line__value">{{ value }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="compare-attrs mobile">
+            {% for group, values in attrs.items %}
+                <div class="compare-attrs-line">
+                    <div class="compare-attrs-line__title">
+                        <span class="compare-attrs-line__value">{{ group }}</span>
+                    </div>
+                    <div class="compare-attrs-line-slider fix_slider">
+                        {% for value in values %}
+                            <div class="compare-attrs-line-item">
+                                <span class="compare-attrs-line__value">{{ value }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

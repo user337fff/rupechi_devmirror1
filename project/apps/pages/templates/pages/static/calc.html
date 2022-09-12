@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/calcPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block footer_extra %}
+    <script src="{% static 'js/calcPage.bundle.js' %}?v={{ v }}"></script>
+{% endblock %}
+
+{% block content %}
+    <section class="calc-section">
+        <form class="section-wrapper">
+            <span class="calc__subtitle">С помощью данного сервиса можно выбрать подходящий дымоход</span>
+            <div class="calc-block">
+                <span class="calc-block__title">Выберите вывод трубы</span>
+                <div class="calc-block-body calc-pipe">
+                    <label>
+                        <input type="radio" name="pipe" value="roof" {% if pipe == 'roof' %}checked{% endif %}>
+                        <span>
+                            <img src="{% static 'images/calc_roof.png' %}" alt="Через крышу">
+                            <span>Через крышу</span>
+                        </span>
+                    </label>
+                    <label>
+                        <input type="radio" name="pipe" value="wall" {% if pipe == 'wall' %}checked{% endif %}>
+                        <span>
+                            <img src="{% static 'images/calc_wall.png' %}" alt="Через стену">
+                            <span>Через стену</span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+            <div class="calc-block">
+                <span class="calc-block__title">Выберите диаметр дымохода</span>
+                <span class="calc-block__subtitle">
+                    Поле было автоматически заполнено специально для товара,
+                    из которого совершен переход. <br>
+                    Изменять рекомендуется, если только вам нужен дымоход к другому товару.
+                </span>
+                <div class="calc-block-body calc-dropdown">
+                    <div class="my-select">
+                        <div class="my-select-header">
+                            <input type="hidden" name="diameter" class="my-select-header__selected" value="{{ diameter|default:'120' }}">
+                            <span class="my-select-header__option">{% if diameter %}{{ diameter }}{% else %}Выбрать{% endif %}</span>
+                            <svg role="img" class="my-select-header__svg">
+                                <use href="/static/images/sprite.svg#dropdown"></use>
+                            </svg>
+                        </div>
+                        <div class="my-select-dropdown">
+                            <div class="my-select-dropdown__wrap" data-simplebar>
+                                {% for d in diameters %}
+                                    <a href="#"
+                                       class="my-select-dropdown__option {% if diameter == d %}selected{% endif %}"
+                                       data-select="{{ d }}">{{ d }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="calc-block">
+                <span class="calc-block__title">Выберите <span data-image>высоту</span> дымохода</span>
+                <div class="calc-block-body calc-dropdown">
+                    <div class="my-select">
+                        <div class="my-select-header">
+                            <input type="hidden" name="height" class="my-select-header__selected" value="{{ height|default:'4' }}">
+                            <span class="my-select-header__option">{% if height %}{{ height }}{% else %}Выбрать{% endif %}</span>
+                            <svg role="img" class="my-select-header__svg">
+                                <use href="/static/images/sprite.svg#dropdown"></use>
+                            </svg>
+                        </div>
+                        <div class="my-select-dropdown">
+                            <div class="my-select-dropdown__wrap" data-simplebar>
+                                {% for h in heights %}
+                                    <a href="#"
+                                       class="my-select-dropdown__option {% if height == h %}selected{% endif %}"
+                                       data-select="{{ h }}">{{ h }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-green" type="submit"><span class="btn__text">Рассчитать</span></button>
+        </form>
+    </section>
+    <section class="calc-items-section">
+        <div class="section-wrapper">
+            {{ items }}
+        </div>
+    </section>
+{% endblock %}

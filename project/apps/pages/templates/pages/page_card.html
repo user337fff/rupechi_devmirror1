@@ -1,0 +1,8 @@
+<div>
+<a href="{{ post.get_absolute_url }}">
+<p>{{ post.title }}<p>
+{% if post.image %}
+<img src="{{ post.image.url }}">
+{% endif %}
+</p>
+</div>

@@ -1,0 +1,41 @@
+{% extends 'pages/page.html' %}
+
+{% load static %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/reviewsPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block footer_extra %}
+    <script src="{% static 'js/reviewsPage.bundle.js' %}?v={{ v }}"></script>
+{% endblock %}
+
+{% block inside_content %}
+    <div class="reviews">
+        <div class="reviews__title">Хотите оставить отзыв?</div>
+        <form class="reviews-form ajax-form" method="POST" action="{% url 'reviews:set' %}">
+            <label>
+                <textarea name="message" placeholder="Оставить отзыв" required></textarea>
+            </label>
+            <label>
+                <input type="text" name="author" placeholder="Имя*" required>
+            </label>
+            <div class="reviews-form-footer">
+                <button type="submit" class="btn btn-primary">
+                    <span class="btn__text">Отправить</span>
+                </button>
+                {% if personal_page %}
+                <span class="reviews-form-footer__help_text">
+                    Нажимая на кнопку, вы соглашаетесь на <a href="{{ personal_page.get_absolute_url }}"  target="_blank">обработку персональных данных</a>
+                </span>
+                {% endif %}
+            </div>
+        </form>
+        <div class="reviews-body">
+            {{ items|safe }}
+        </div>
+        <div class="reviews-pagination">
+            {{ pagination|safe }}
+        </div>
+    </div>
+{% endblock %}

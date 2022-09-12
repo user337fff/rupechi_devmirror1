@@ -1,0 +1,12 @@
+<div class="useful">
+    {% for item in object.block.get_pages.iterator %}
+        <a href="{{ item.page.get_absolute_url }}" class="useful-item">
+        <span class="useful-item-image">
+            {% if item.page.image %}
+                <img src="{{ item.page.image.url }}" alt="{{ item.page }}" class="useful-item-image">
+            {% endif %}
+        </span>
+            <span class="useful-item__text">{{ item.page }}</span>
+        </a>
+    {% endfor %}
+</div>

@@ -1,0 +1,22 @@
+{% extends 'pages/page.html' %}
+
+{% load static %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/brandsPage.css' %}?v={{ v }}">
+{% endblock %}
+
+{% block inside_content %}
+    <div class="brands">
+        {% for item in items %}
+            {% if item.image %}
+            <a href="{{ item.get_absolute_url }}" class="brands-item">
+                    <div class="brands-item-img">
+                        {{ item.get_template_picture_medium }}
+                    </div>
+                <span class="brands-item__text">{{ item.description }}</span>
+            </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

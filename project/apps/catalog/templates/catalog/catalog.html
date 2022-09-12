@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static seo catalog %}
+
+{% block page_header_action %}
+{% if not request.user.contractor %}
+    <a href="{% url 'sale' %}">
+        Распродажа
+        <svg role="img">
+            <use href="/static/images/sprite.svg#dropdown"></use>
+        </svg>
+    </a>
+{% endif %}
+{% endblock page_header_action %}
+
+{% block content %}
+    <section class="catalog-section">
+        <div class="section-wrapper">
+            <div class="catalog">
+                {% for category, children in catalog.items %}
+                    <div class="catalog-item">
+                        {% if category.image %}
+                            <div class="catalog-item-image">
+                                {{ category.get_template_picture }}
+                            </div>
+                        {% endif %}
+                        <a href="{{ category.get_absolute_url }}" class="catalog-item-category title">
+                            {{ category }}
+                        </a>
+                        {% for subcategory in children|slice:":8" %}
+                            <a href="{{ subcategory.get_absolute_url }}" class="catalog-item-category">
+                                {{ subcategory }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block header_extra %}
+    <link rel="stylesheet" href="{% static 'css/catalogPage.css' %}?v={{ v }}">
+{% endblock %}
+{% block footer_extra %}
+    <script src="{% static 'js/catalogPage.bundle.js' %}?v={{ v }}"></script>
+{% endblock %}

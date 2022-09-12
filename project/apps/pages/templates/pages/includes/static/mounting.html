@@ -1,0 +1,142 @@
+{% load static %}
+<section class="mounting-section">
+        <div class="section-wrapper">
+            <div class="mounting">
+                <div class="mounting-products">
+                    <div class="mounting-product">
+                        <img src="{% static 'images/kamin1.png' %}" alt="Камин" class="mounting-product-image">
+                        <div class="mounting-product-info">
+                            Монтаж камина: от 15 000 руб.
+                        </div>
+                    </div>
+                    <div class="mounting-product">
+                        <img src="{% static 'images/kamin2.png' %}" alt="Камин" class="mounting-product-image">
+                        <div class="mounting-product-info">
+                            Монтаж банной, отопительной печи или печи-камина: от 12000 руб.
+                        </div>
+                    </div>
+                    <div class="mounting-product">
+                        <img src="{% static 'images/kamin3.png' %}" alt="Камин" class="mounting-product-image">
+                        <div class="mounting-product-info">
+                            Монтаж дымохода: от 5000 руб.
+                        </div>
+                    </div>
+                    <div class="mounting-product">
+                        <img src="{% static 'images/kamin4.png' %}" alt="Камин" class="mounting-product-image">
+                        <div class="mounting-product-info">
+                            Монтаж котла: 12000 руб, электрический - от 4000 руб.
+                        </div>
+                    </div>
+                </div>
+                {% include 'pages/content/form.html' %}
+                <div class="mounting-life">
+                    <div class="mounting-life__title">
+                        <p>Сделали уже 84 качественных монтажа в 2021 году!</p>
+                        <p>Ваш монтаж будет выполнен так:</p>
+                    </div>
+                    <div class="mounting-life-body">
+                        <div class="mounting-life-item">
+                            <div class="mounting-life-item-icon">
+                                <div class="mounting-life-item-icon__counter">1</div>
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#life_phone"></use>
+                                </svg>
+                            </div>
+                            <span class="mounting-life-item__text">
+                                Оставляете заявку на монтаж
+                            </span>
+                        </div>
+                        <div class="mounting-life-item">
+                            <div class="mounting-life-item-icon">
+                                <div class="mounting-life-item-icon__counter">2</div>
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#life_schema"></use>
+                                </svg>
+                            </div>
+                            <span class="mounting-life-item__text">
+                                Получаете схему монтажа или проект
+                            </span>
+                        </div>
+                        <div class="mounting-life-item">
+                            <div class="mounting-life-item-icon">
+                                <div class="mounting-life-item-icon__counter">3</div>
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#life_kamin"></use>
+                                </svg>
+                            </div>
+                            <span class="mounting-life-item__text">
+                                Мы подбираем оборудование и расходные материалы
+                            </span>
+                        </div>
+                        <div class="mounting-life-item">
+                            <div class="mounting-life-item-icon">
+                                <div class="mounting-life-item-icon__counter">4</div>
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#life_car"></use>
+                                </svg>
+                            </div>
+                            <span class="mounting-life-item__text">
+                                Привозим все материалы на объект
+                            </span>
+                        </div>
+                        <div class="mounting-life-item">
+                            <div class="mounting-life-item-icon">
+                                <div class="mounting-life-item-icon__counter">5</div>
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#life_settings"></use>
+                                </svg>
+                            </div>
+                            <span class="mounting-life-item__text">
+                                Устанавливаем и проверяем работу
+                            </span>
+                        </div>
+                        <div class="mounting-life-item">
+                            <div class="mounting-life-item-icon">
+                                <div class="mounting-life-item-icon__counter">6</div>
+                                <svg role="img">
+                                    <use href="/static/images/sprite.svg#life_box"></use>
+                                </svg>
+                            </div>
+                            <span class="mounting-life-item__text">
+                                Забираем и вывозим неиспользованные детали
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mounting-guarantee">
+                    <span class="mounting-guarantee__title">
+                        Наши гарантии
+                    </span>
+                    <div class="mounting-guarantee-body">
+                        <div class="mounting-guarantee-item">
+                            <img src="{% static 'images/success.png' %}" alt="Галочка"
+                                 class="mounting-guarantee-item__image">
+                            <div class="mounting-guarantee-item__text">
+                                <p>Сначала монтаж — потом деньги.</p>
+                                <p>Окончательный расчёт — только после того, как вы будете довольны монтажом!</p>
+                            </div>
+                        </div>
+                        <div class="mounting-guarantee-item">
+                            <img src="{% static 'images/success.png' %}" alt="Галочка"
+                                 class="mounting-guarantee-item__image">
+                            <div class="mounting-guarantee-item__text">
+                                <p>Если что-то пойдёт не так — даём гарантию на возврат средств!</p>
+                            </div>
+                        </div>
+                        <div class="mounting-guarantee-item">
+                            <img src="{% static 'images/success.png' %}" alt="Галочка"
+                                 class="mounting-guarantee-item__image">
+                            <div class="mounting-guarantee-item__text">
+                                <p>Для простых объектов — сокращённые сроки монтажа</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-page">
+                {% for block in page.get_content_list %}
+                    {{ block.render|safe }}
+                {% endfor %}
+            </div>
+        </div>
+    </section>

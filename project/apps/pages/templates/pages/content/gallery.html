@@ -1,0 +1,15 @@
+<div class="gallery row-{{ object.block.in_row|default:2 }}">
+    {% for item in object.block.gallery_items.all %}
+        <a class="gallery-item" href="{{ item.image.url }}" data-fancybox="group_{{ object.block.id }}">
+            <span class="gallery-item__img">
+                <img src="{{ item.image.url }}" alt="{{ item.title }}"/>
+                <span class="gallery-item__wrapper">
+                    <svg role="img">
+                        <use href="/static/images/sprite.svg#search"></use>
+                    </svg>
+                </span>
+            </span>
+            <span class="gallery-item__sign">{{ item.title }}</span>
+        </a>
+    {% endfor %}
+</div>
